@@ -1,0 +1,31 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f8fafc;
+  color: #333;
+}
+
+h1,
+h2,
+h3 {
+  color: #2c5282;
+}
+
+.post {
+  transition: transform 0.3s ease-in-out;
+}
+
+.post:hover {
+  transform: translateY(-5px);
+}
+
+.bible-quote {
+  transition: background-color 0.3s ease-in-out;
+}
+
+.bible-quote:hover {
+  background-color: #ebf8ff;
+}
