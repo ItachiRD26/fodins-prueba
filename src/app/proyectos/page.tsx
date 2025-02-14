@@ -154,7 +154,7 @@ export default function ProyectosPage() {
               Tu contribución puede hacer una gran diferencia en la vida de muchas personas. Ayúdanos a seguir
               transformando vidas y construyendo futuros.
             </p>
-            <Link href="/colabora/dona">
+            <Link href="/colabora/donaciones">
               <Button
                 size="lg"
                 variant="secondary"

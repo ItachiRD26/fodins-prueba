@@ -56,7 +56,7 @@ export function ContactSection() {
             <ul className="space-y-6 text-lg">
               <li className="flex items-center">
                 <MapPin className="mr-3" />
-                <span>Ubicacion del Ministerio,Republica Dominicana</span>
+                <span>Calle los Lirios 20A Santo Domingo Norte Sector San Felipe,Republica Dominicana</span>
               </li>
               <li className="flex items-center">
                 <Phone className="mr-3" />

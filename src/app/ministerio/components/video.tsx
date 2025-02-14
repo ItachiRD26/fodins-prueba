@@ -8,7 +8,7 @@ export function VideoSection({ videos }: VideoSectionProps) {
   return (
     <section id="videos" className="py-16 bg-gradient-to-r from-blue-50 to-blue-100">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-blue-900 mb-12 text-center">Videos Inspiradores</h2>
+        <h2 className="text-4xl font-bold text-blue-900 mb-12 text-center">Nuestros Videos</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {videos.map((video, index) => (
             <div key={index} className="bg-white p-8 rounded-lg shadow-lg border border-blue-200 hover:shadow-2xl transition duration-300 transform hover:scale-105">
