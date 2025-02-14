@@ -21,7 +21,7 @@ export const Testimonial: React.FC<TestimonialProps> = ({ name, role, quote, ima
       <CardContent>
         <p className="text-lg font-semibold">{name}</p>
         <p className="text-sm text-gray-500">{role}</p>
-        <p className="mt-4 text-gray-700 italic">"{quote}"</p>
+        <p className="mt-4 text-gray-700 italic">{`"${quote}"`}</p>
       </CardContent>
     </Card>
   );

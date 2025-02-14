@@ -11,6 +11,9 @@ export interface Video {
 }
 
 export interface Event {
+  description: ReactNode;
+  title: string;
+  imageUrl: string | StaticImport;
   id: string;
   name: string;
   date: string;

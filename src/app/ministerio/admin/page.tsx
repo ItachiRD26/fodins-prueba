@@ -2,11 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 import { ref, set, push } from "firebase/database";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage, auth } from "../firebaseConfig";
-import { Verse, Video, Event } from "../types";
 import { getVerse } from "../utils/bibleUtils";
 import bibleIndex from "../data/biblia/index.json";
 
@@ -38,7 +37,7 @@ export default function AdminPanel() {
     });
 
     return () => unsubscribe();
-  }, [auth, router]);
+  }, [router]);
 
   // Función para mostrar un mensaje de éxito
   const showSuccessMessage = (message: string) => {

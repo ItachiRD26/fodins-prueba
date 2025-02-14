@@ -1,10 +1,11 @@
-"use client"
+"use client";
 
-import { useState, useCallback } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Menu, X, Facebook, Twitter, Instagram, Mail, ChevronDown, Youtube } from "lucide-react"
+import { useState, useCallback } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Menu, X, Facebook, Instagram, Mail, ChevronDown, Youtube } from "lucide-react";
+import Image from "next/image";
 
 const navItems = [
   {
@@ -17,40 +18,40 @@ const navItems = [
     name: "COLABORA",
     href: "",
     subitems: [
-      { name: "Hazte socio", href: "/colabora/hazte-socio"},
+      { name: "Hazte socio", href: "/colabora/hazte-socio" },
       { name: "Donaciones", href: "/colabora/donaciones" },
       { name: "Voluntariado", href: "/colabora/voluntariado" },
     ],
   },
-  {name: "CAMAPAÑA", href:"/campana"},
+  { name: "CAMAPAÑA", href: "/campana" },
   { name: "BLOG", href: "/blog" },
   { name: "MINISTERIO", href: "/ministerio" },
-]
+];
 
 const socialLinks = [
   { icon: Facebook, href: "https://www.facebook.com/fundacionfodins" },
   { icon: Instagram, href: "https://www.instagram.com/fodinsdesarrollo/" },
-  {icon: Youtube, href:"https://www.youtube.com/@fundacionfodins7948"},
-]
+  { icon: Youtube, href: "https://www.youtube.com/@fundacionfodins7948" },
+];
 
 export function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [activeDropdown, setActiveDropdown] = useState("")
-  const pathname = usePathname()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState("");
+  const pathname = usePathname();
 
   const closeMobileMenu = useCallback(() => {
-    setMobileMenuOpen(false)
-    setActiveDropdown("")
-  }, [])
+    setMobileMenuOpen(false);
+    setActiveDropdown("");
+  }, []);
 
   const handleNavItemClick = useCallback(
     (href: string) => {
       if (href) {
-        closeMobileMenu()
+        closeMobileMenu();
       }
     },
-    [closeMobileMenu],
-  )
+    [closeMobileMenu]
+  );
 
   return (
     <header className="sticky top-0 z-50 bg-white">
@@ -59,7 +60,13 @@ export function Navbar() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between md:h-10">
             <div className="flex justify-center md:justify-start space-x-4 mb-2 md:mb-0">
               {socialLinks.map((link, index) => (
-                <a key={index} href={link.href} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-700">
+                <a
+                  key={index}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-500 hover:text-gray-700"
+                >
                   <link.icon className="h-4 w-4" />
                 </a>
               ))}
@@ -78,7 +85,13 @@ export function Navbar() {
           <div className="flex justify-between items-center h-16">
             <div className="flex-shrink-0">
               <Link href="/" className="flex items-center">
-                <img className="h-14 w-auto" src="/logo.png" alt="Logo" />
+                <Image
+                  src="/logo.png"
+                  alt="Logo"
+                  width={100}
+                  height={56}
+                  className="h-14 w-auto"
+                />
               </Link>
             </div>
             <div className="hidden md:flex md:items-center md:justify-between md:flex-1 ml-40 font-extrabold">
@@ -145,9 +158,9 @@ export function Navbar() {
                   <button
                     onClick={() => {
                       if (item.href) {
-                        handleNavItemClick(item.href)
+                        handleNavItemClick(item.href);
                       } else {
-                        setActiveDropdown(activeDropdown === item.name ? "" : item.name)
+                        setActiveDropdown(activeDropdown === item.name ? "" : item.name);
                       }
                     }}
                     className={`w-full text-left pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
@@ -195,5 +208,5 @@ export function Navbar() {
         )}
       </nav>
     </header>
-  )
+  );
 }

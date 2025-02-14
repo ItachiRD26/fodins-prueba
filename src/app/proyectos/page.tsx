@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/container"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { motion, HTMLMotionProps } from "framer-motion"
+import { motion} from "framer-motion"
 
 interface Project {
   id: number

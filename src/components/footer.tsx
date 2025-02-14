@@ -1,12 +1,13 @@
 import Link from "next/link";
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin,Youtube } from "lucide-react";
+import { Facebook, Instagram, Mail, Phone, MapPin, Youtube } from "lucide-react";
+import Image from "next/image";
 
 // Enlaces personalizables
 const links = {
   social: [
     { icon: Facebook, href: "https://www.facebook.com/fundacionfodins" },
     { icon: Instagram, href: "https://www.instagram.com/fodinsdesarrollo/" },
-    {icon: Youtube, href:"https://www.youtube.com/@fundacionfodins7948"},
+    { icon: Youtube, href: "https://www.youtube.com/@fundacionfodins7948" },
   ],
   about: [
     { label: "Conócenos", href: "/conocenos/quienes-somos" },
@@ -36,7 +37,13 @@ export function Footer() {
         <div className="xl:grid xl:grid-cols-4 xl:gap-8">
           {/* Logo y redes sociales */}
           <div className="space-y-8 xl:col-span-1">
-            <img className="h-20 w-auto" src="/logoblanco.png" alt="FONDIS" />
+            <Image
+              src="/logoblanco.png"
+              alt="FONDIS"
+              width={80}
+              height={80}
+              className="h-20 w-auto"
+            />
             <p className="text-gray-400 text-sm leading-6">
               Transformando vidas y creando oportunidades para un futuro mejor.
             </p>
@@ -46,7 +53,7 @@ export function Footer() {
                   key={item.href}
                   href={item.href}
                   className="text-gray-400 hover:text-white transition-colors duration-300"
-                  target="blank_"
+                  target="_blank"
                   rel="noopener noreferrer"
                 >
                   <span className="sr-only">{item.href.split(".com")[0]}</span>

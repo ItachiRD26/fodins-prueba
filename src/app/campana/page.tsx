@@ -7,7 +7,7 @@ import { Container } from "@/components/ui/container"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { PayPalScriptProvider } from "@paypal/react-paypal-js"
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { PayPalDonationButton } from "@/components/paypaldonationsbutton"
 import { Notification } from "@/components/notification"
 import { useRouter } from "next/navigation"
@@ -59,31 +59,47 @@ export default function CampanaPage() {
     setEmail("")
   }
 
-  const handlePayPalSuccess = (details: any) => {
-    const payerName = details.payer?.name?.given_name || "Cliente"
-    const amount = parseFloat(donationAmount)
-
+  const handlePayPalSuccess = (details: { payer: { name: { given_name: string } } }) => {
+    const payerName = details.payer?.name?.given_name || "Cliente";
+    const amount = parseFloat(donationAmount);
+  
+    if (isNaN(amount)) {
+      setNotification({
+        message: "El monto de la donación no es válido.",
+        type: "error",
+      });
+      return;
+    }
+  
     // Actualizar el total de donaciones en Firebase
-    const newTotal = totalDonations + amount
+    const newTotal = totalDonations + amount;
     set(ref(database, "totalDonations"), newTotal)
-
-    setNotification({
-      message: `¡Gracias ${payerName}! Tu donación ha sido procesada con éxito.`,
-      type: "success",
-    })
-    resetForm()
-    setTimeout(() => {
-      router.push("/campana/gracias")
-    }, 2000)
-  }
-
-  const handlePayPalError = (error: any) => {
+      .then(() => {
+        setNotification({
+          message: `¡Gracias ${payerName}! Tu donación ha sido procesada con éxito.`,
+          type: "success",
+        });
+        resetForm();
+        setTimeout(() => {
+          router.push("/campana/gracias");
+        }, 2000);
+      })
+      .catch((error) => {
+        console.error("Error al actualizar el total de donaciones:", error);
+        setNotification({
+          message: "Hubo un error al procesar tu donación. Por favor, inténtalo de nuevo.",
+          type: "error",
+        });
+      });
+  };
+  
+  const handlePayPalError = (error: Error) => {
     setNotification({
       message: "Ocurrió un error al procesar tu donación. Por favor, inténtalo de nuevo o contacta con soporte.",
       type: "error",
-    })
-    console.error("Error al cargar el SDK de PayPal:", error)
-  }
+    });
+    console.error("Error al cargar el SDK de PayPal:", error);
+  };
 
   return (
     <PayPalScriptProvider

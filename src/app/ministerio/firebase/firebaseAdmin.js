@@ -12,7 +12,7 @@ export const verifyUser = async (uid) => {
   try {
     const user = await admin.auth().getUser(uid);
     return user.uid === 'eJLs6IzcKmUbkWGYJkrAMYcHTgN2'; // Reemplaza con el UID permitido
-  } catch (error) {
+  } catch {
     return false;
   }
 };

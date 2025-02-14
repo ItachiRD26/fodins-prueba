@@ -31,12 +31,7 @@ export default function HazteSocioPage() {
   const [showNotification, setShowNotification] = useState(false)
   const [tipoInstitucion, setTipoInstitucion] = useState("")
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm<DatosSocio>()
+  const { register, handleSubmit, formState: { errors } } = useForm<DatosSocio>();
 
   const onSubmit = async (data: DatosSocio) => {
     setLoading(true)

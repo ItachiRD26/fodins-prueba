@@ -19,7 +19,7 @@ interface Post {
   date: string
   category: string
   imageUrl: string
-  readMoreLink?: string // Added readMoreLink
+  readMoreLink?: string 
 }
 
 interface FeaturedPostProps {
@@ -36,7 +36,7 @@ interface BlogPostProps {
   date: string
   category: string
   imageUrl: string
-  readMoreLink?: string // Added readMoreLink
+  readMoreLink?: string 
 }
 
 const posts: Post[] = [
@@ -203,7 +203,7 @@ export default function BlogPage() {
   )
 }
 
-function FeaturedPost({ title, excerpt, imageUrl, date, category }: FeaturedPostProps) {
+function FeaturedPost({ title, imageUrl, date, category }: FeaturedPostProps) {
   return (
     <Card className="overflow-hidden">
       <div className="relative h-64 md:h-80">
@@ -217,7 +217,7 @@ function FeaturedPost({ title, excerpt, imageUrl, date, category }: FeaturedPost
         </div>
       </div>
     </Card>
-  )
+  );
 }
 
 function BlogPost({ title, excerpt, date, category, imageUrl, readMoreLink }: BlogPostProps) {
