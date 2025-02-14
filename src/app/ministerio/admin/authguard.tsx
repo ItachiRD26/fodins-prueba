@@ -1,31 +1,23 @@
-"use client"
+import { ReactNode } from 'react';
+import { useAuth } from '../hooks/useauth';
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import { auth } from "../firebase/firebase"
-import { onAuthStateChanged, User } from "firebase/auth"
+interface AuthGuardProps {
+  children: ReactNode;
+}
 
-const ADMIN_UID = "HUD7XNKKzxcHz1Lh7HSXngcJlXn1"
+// Lista de UIDs autorizados
+const allowedUIDs = ['HUD7XNKKzxcHz1Lh7HSXngcJlXn1', 'eJLs6IzcKmUbkWGYJkrAMYcHTgN2'];
 
-export default function AuthGuard({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
-  const router = useRouter()
+export default function AuthGuard({ children }: AuthGuardProps) {
+  const { user, loading } = useAuth();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (!currentUser || currentUser.uid !== ADMIN_UID) {
-        router.push("/ministerio") // Redirige a la página principal si no es el admin
-      } else {
-        setUser(currentUser)
-      }
-      setLoading(false)
-    })
+  if (loading) {
+    return <div>Cargando...</div>; // Muestra un mensaje de carga mientras se verifica la autenticación
+  }
 
-    return () => unsubscribe()
-  }, [router])
+  if (!user || !allowedUIDs.includes(user.uid)) {
+    return null; // No renderiza nada si el usuario no está autorizado
+  }
 
-  if (loading) return <p>Cargando...</p>
-
-  return user ? <>{children}</> : null
+  return <>{children}</>; // Renderiza el contenido si el usuario está autenticado
 }

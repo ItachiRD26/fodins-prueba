@@ -1,37 +1,56 @@
 "use client";
 
-import { useFetchData } from "./hooks/useFetchData";
-import EventImage from "./components/eventimage";
-import { Card, CardContent } from "./components/ui/card";
-import { Navbar } from "./components/navbar";
-import { Footer } from "./components/footer";
+import { HeroSection } from "./components/hero";
+import { VerseSection } from "./components/verse";
+import { VideoSection } from "./components/video";
+import { EventSection } from "./components/post";
+import { ContactSection } from "./components/contact";
+import Header from "./components/header";
+import Footer from "./components/footer";
+import { useEffect, useState } from "react";
+import { ref, onValue } from "firebase/database";
+import { db } from "./firebaseConfig";
 
-export default function MinisterioPage() {
-  const { events } = useFetchData();
+export default function Home() {
+  const [verses, setVerses] = useState([]);
+  const [videos, setVideos] = useState([]);
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const versesRef = ref(db, "verses");
+    onValue(versesRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setVerses(Object.values(data));
+      }
+    });
+
+    const videosRef = ref(db, "videos");
+    onValue(videosRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setVideos(Object.values(data));
+      }
+    });
+
+    const eventsRef = ref(db, "events");
+    onValue(eventsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setEvents(Object.values(data));
+      }
+    });
+  }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-grow">
-        {/* Eventos Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12">Próximos Eventos</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {events.map((event) => (
-                <Card key={event.id}>
-                  <CardContent className="p-0">
-                    <EventImage src={event.imageUrl} />
-                    <div className="p-4">
-                      <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
-                      <p className="text-gray-600">{event.description}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <Header />
+      <main className="flex-1">
+        <HeroSection />
+        <VerseSection verses={verses} />
+        <VideoSection videos={videos} />
+        <EventSection events={events} />
+        <ContactSection />
       </main>
       <Footer />
     </div>

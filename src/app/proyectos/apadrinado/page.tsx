@@ -75,7 +75,7 @@ export default function ProyectoPage() {
 
           <div className="text-center">
             <h2 className="text-2xl font-bold mb-4">¿Quieres apoyar este proyecto?</h2>
-            <Link href="/colabora/dona">
+            <Link href="/colabora/donaciones">
               <Button size="lg" className="font-semibold">
                 Donar Ahora
               </Button>

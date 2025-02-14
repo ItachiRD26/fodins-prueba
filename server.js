@@ -6,48 +6,67 @@ require("dotenv").config();
 
 const app = express();
 
+// Configuración de CORS
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3000", //CAMBIAR A LA URL DEL SITIO WEB
     methods: ["POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
   })
 );
 
+// Middleware para parsear el cuerpo de las solicitudes
 app.use(bodyParser.json());
 
-// Create a transporter using Gmail's SMTP server
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // Use TLS
+// Configuración del transporter con Zoho Mail
+const zohoTransporter = nodemailer.createTransport({
+  host: "smtp.zoho.com",
+  port: 465,
+  secure: true, // Usar SSL
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: process.env.EMAIL_USER_ZOHOMAIL, // Tu correo de Zoho Mail
+    pass: process.env.EMAIL_PASS_ZOHOMAIL, // Tu contraseña de Zoho Mail
   },
   tls: {
-    rejectUnauthorized: false,
+    rejectUnauthorized: false, // Ignorar errores de certificado (opcional)
   },
 });
 
-// Verify the transporter configuration
-transporter.verify((error, success) => {
-  if (error) {
-    console.log("Transporter verification error:", error);
-  } else {
-    console.log("Server is ready to take our messages");
+// Función para verificar la configuración del transporter
+const verifyTransporter = (transporter, name) => {
+  transporter.verify((error, success) => {
+    if (error) {
+      console.log(`Error al verificar el transporter de ${name}:`, error);
+    } else {
+      console.log(`Servidor listo para enviar correos con ${name}`);
+    }
+  });
+};
+
+// Verificar la configuración del transporter de Zoho Mail
+verifyTransporter(zohoTransporter, 'Zoho Mail');
+
+// Función para enviar correo usando Zoho Mail
+const sendEmail = async (options) => {
+  try {
+    // Enviar correo con Zoho Mail
+    await zohoTransporter.sendMail(options);
+    console.log('Correo enviado con Zoho Mail');
+  } catch (error) {
+    console.error('Error al enviar con Zoho Mail:', error);
+    throw new Error('No se pudo enviar el correo con Zoho Mail');
   }
-});
+};
 
 // Endpoint para enviar correo de voluntario
 app.post("/enviar-correo", async (req, res) => {
   const { nombre, apellidos, correo, telefono, profesion, areasInteres, disponibilidad } = req.body;
 
   try {
-    // Send email to admin
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: "petergarcia0426@gmail.com",
+    // Enviar correo al administrador
+    await sendEmail({
+      from: process.env.EMAIL_USER_ZOHOMAIL, // Usar el correo de Zoho como remitente
+      to: "fundacionfodins2015@gmail.com", // Cambia esto al correo del administrador
       subject: "Nuevo registro de voluntario",
       html: `
         <h1>Nuevo registro de voluntario</h1>
@@ -60,9 +79,9 @@ app.post("/enviar-correo", async (req, res) => {
       `,
     });
 
-    // Send confirmation email to volunteer
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+    // Enviar correo de confirmación al voluntario
+    await sendEmail({
+      from: process.env.EMAIL_USER_ZOHOMAIL, // Usar el correo de Zoho como remitente
       to: correo,
       subject: "Gracias por registrarte en FODINS",
       html: `
@@ -85,10 +104,10 @@ app.post("/enviar-correo-socio", async (req, res) => {
   const { nombre, correo, telefono, tipoInstitucion, nombreInstitucion, colaboracion, mensaje } = req.body;
 
   try {
-    // Send email to admin
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: "petergarcia0426@gmail.com", // Cambia esto al correo del administrador
+    // Enviar correo al administrador
+    await sendEmail({
+      from: process.env.EMAIL_USER_ZOHOMAIL, // Usar el correo de Zoho como remitente
+      to: "fundacionfodins2015@gmail.com", // Cambia esto al correo del administrador
       subject: "Nueva solicitud de socio",
       html: `
         <h1>Nueva solicitud de socio</h1>
@@ -102,9 +121,9 @@ app.post("/enviar-correo-socio", async (req, res) => {
       `,
     });
 
-    // Send confirmation email to the potential partner
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+    // Enviar correo de confirmación al socio potencial
+    await sendEmail({
+      from: process.env.EMAIL_USER_ZOHOMAIL, // Usar el correo de Zoho como remitente
       to: correo,
       subject: "Gracias por tu interés en ser socio de FODINS",
       html: `
@@ -122,10 +141,46 @@ app.post("/enviar-correo-socio", async (req, res) => {
   }
 });
 
+// Endpoint para enviar correo de contacto
+app.post("/enviar-correo-contacto", async (req, res) => {
+  const { name, email, message } = req.body;
+
+  try {
+    // Enviar correo al administrador
+    await sendEmail({
+      from: process.env.EMAIL_USER_ZOHOMAIL, // Usar el correo de Zoho como remitente
+      to: "ministerionuevavida16@yahoo.com", // Cambia esto al correo del administrador
+      subject: "Nuevo Registro Ministerio",
+      html: `
+        <h1>Nuevo mensaje de contacto</h1>
+        <p><strong>Nombre:</strong> ${name}</p>
+        <p><strong>Correo:</strong> ${email}</p>
+        <p><strong>Mensaje:</strong> ${message}</p>
+      `,
+    });
+
+    // Enviar correo de confirmación al usuario
+    await sendEmail({
+      from: process.env.EMAIL_USER_ZOHOMAIL, // Usar el correo de Zoho como remitente
+      to: email,
+      subject: "Dios te bendiga más,de parte del Ministerio Nueva Vida",
+      html: `
+        <h1>¡Gracias por contactarnos!</h1>
+        <p>Hemos recibido tu mensaje y nos pondremos en contacto contigo pronto.</p>
+        <p>Atentamente,</p>
+        <p>El equipo de Nueva Vida</p>
+      `,
+    }); 
+
+    res.status(200).json({ message: "Correos enviados correctamente" });
+  } catch (error) {
+    console.error("Error enviando correos:", error);
+    res.status(500).json({ message: "Error al enviar los correos", error: error.message });
+  }
+});
+
 // Iniciar el servidor
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
-
-console.log("Server code updated successfully.");

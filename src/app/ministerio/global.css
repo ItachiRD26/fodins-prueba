@@ -1,31 +1,36 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
 
 body {
-  font-family: "Arial", sans-serif;
-  background-color: #f8fafc;
-  color: #333;
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-start-rgb));
 }
 
-h1,
-h2,
-h3 {
-  color: #2c5282;
+.aspect-w-16 {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
 }
 
-.post {
-  transition: transform 0.3s ease-in-out;
+.aspect-w-16 > * {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
 }
 
-.post:hover {
-  transform: translateY(-5px);
-}
-
-.bible-quote {
-  transition: background-color 0.3s ease-in-out;
-}
-
-.bible-quote:hover {
-  background-color: #ebf8ff;
-}

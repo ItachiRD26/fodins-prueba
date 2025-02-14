@@ -5,12 +5,12 @@ import RootLayoutClient from "./layout.client"; // Importa el Client Component
 
 export const metadata: Metadata = {
   title: "FODINS",
-  description: "Fodins es una fundación comprometida con el desarrollo social, brindando oportunidades y apoyo a quienes más lo necesitan. Juntos, construimos un futuro mejor.",
+  description:
+    "Fodins es una fundación comprometida con el desarrollo social, brindando oportunidades y apoyo a quienes más lo necesitan. Juntos, construimos un futuro mejor.",
   icons: {
     icon: "/logo.png",
   },
 };
-
 
 export default function RootLayout({
   children,
