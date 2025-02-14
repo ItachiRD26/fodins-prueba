@@ -29,7 +29,6 @@ export default function HazteSocioPage() {
   const [enviado, setEnviado] = useState(false)
   const [loading, setLoading] = useState(false)
   const [showNotification, setShowNotification] = useState(false)
-  const [tipoInstitucion, setTipoInstitucion] = useState("")
 
   const { register, handleSubmit, formState: { errors } } = useForm<DatosSocio>();
 
@@ -181,7 +180,6 @@ export default function HazteSocioPage() {
                     id="tipoInstitucion"
                     {...register("tipoInstitucion", { required: "Por favor, seleccione el tipo de institución" })}
                     className="w-full px-3 py-2 border rounded-md"
-                    onChange={(e) => setTipoInstitucion(e.target.value)}
                   >
                     <option value="">Seleccione el tipo de institución</option>
                     <option value="persona">Persona natural</option>
@@ -244,7 +242,6 @@ export default function HazteSocioPage() {
 
           {/* Beneficios de ser Socio */}
           <motion.div variants={fadeIn}>
-
             <h3 className="text-2xl font-semibold mb-4">¿Por qué ser socio de FODINS?</h3>
             <p className="text-gray-600 mb-4">
               Al convertirte en socio de FODINS, no solo apoyas nuestros proyectos, sino que también te conviertes en

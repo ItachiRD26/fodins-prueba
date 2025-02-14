@@ -48,7 +48,7 @@ export default function DonacionesPage() {
     setEmail("")
   }
 
-  const handlePayPalSuccess = (details: any) => {
+  const handlePayPalSuccess = (details: { payer?: { name?: { given_name?: string } } }) => {
     const payerName = details.payer?.name?.given_name || "Cliente"
     setNotification({
       message: `¡Gracias ${payerName}! Tu donación ha sido procesada con éxito.`,
@@ -60,7 +60,7 @@ export default function DonacionesPage() {
     }, 2000)
   }
 
-  const handlePayPalError = (error: any) => {
+  const handlePayPalError = (error: Error) => {
     setNotification({
       message: "Ocurrió un error al procesar tu donación. Por favor, inténtalo de nuevo o contacta con soporte.",
       type: "error",
