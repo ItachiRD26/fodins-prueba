@@ -109,7 +109,7 @@ export async function generateMetadata({ params }: PageProps) {
   }
 }
 
-export default function BlogPost({ params }: PageProps) {
+export default async function BlogPost({ params }: PageProps) {
   const post = posts.find((post) => post.id === params.id)
 
   if (!post) {
