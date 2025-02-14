@@ -1,39 +1,38 @@
-import { notFound } from "next/navigation"
-import { ArrowLeft, Calendar, User, Tag } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+// src/app/blog/[id]/page.tsx
+import { notFound } from "next/navigation";
+import { ArrowLeft, Calendar, User, Tag } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { posts } from "@/data/posts"; // Importamos los posts desde el archivo posts.ts
 
-// Move posts data to a separate file for better organization
-import { posts } from "../data/posts"
-
-interface PageProps {
+type Props = {
   params: {
-    id: string
-  }
-}
+    id: string;
+  };
+};
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const post = posts.find((post) => post.id === params.id)
+export async function generateMetadata({ params }: Props) {
+  const post = posts.find((post) => post.id === params.id);
 
   if (!post) {
     return {
       title: "Post Not Found",
-    }
+    };
   }
 
   return {
     title: post.title,
-  }
+  };
 }
 
-export default function BlogPost({ params }: PageProps) {
-  const post = posts.find((post) => post.id === params.id)
+export default function BlogPost({ params }: Props) {
+  const post = posts.find((post) => post.id === params.id);
 
   if (!post) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -82,6 +81,5 @@ export default function BlogPost({ params }: PageProps) {
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }
-

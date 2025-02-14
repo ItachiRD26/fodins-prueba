@@ -1,126 +1,43 @@
-"use client"
+// src/app/blog/page.tsx
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import { motion } from "framer-motion"
-import { format } from "date-fns"
-import { es } from "date-fns/locale"
-import { ChevronRight } from "lucide-react"
-import Link from "next/link"
+import { useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-
-interface Post {
-  id: number
-  title: string
-  excerpt: string
-  date: string
-  category: string
-  imageUrl: string
-  readMoreLink?: string 
-}
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { posts } from "@/data/posts"; // Importamos los posts desde el archivo posts.ts
 
 interface FeaturedPostProps {
-  title: string
-  excerpt: string
-  imageUrl: string
-  date: string
-  category: string
+  title: string;
+  excerpt: string;
+  imageUrl: string;
+  date: string;
+  category: string;
 }
 
 interface BlogPostProps {
-  title: string
-  excerpt: string
-  date: string
-  category: string
-  imageUrl: string
-  readMoreLink?: string 
+  title: string;
+  excerpt: string;
+  date: string;
+  category: string;
+  imageUrl: string;
+  readMoreLink?: string;
 }
 
-const posts: Post[] = [
-  {
-    id: 1,
-    title: "Impacto de nuestro programa de educación en comunidades rurales",
-    excerpt: "Descubre cómo nuestras iniciativas educativas están transformando vidas en áreas rurales",
-    date: "2023-06-01",
-    category: "Educación",
-    imageUrl: "/blog-edu1.jpg",
-    readMoreLink: "/blog/1", // Added readMoreLink
-  },
-  {
-    id: 2,
-    title: "Lanzamiento de campaña de salud preventiva",
-    excerpt: "Nuestra nueva campaña busca mejorar la salud en comunidades vulnerables",
-    date: "2023-05-28",
-    category: "Salud",
-    imageUrl: "/blog-salu1.jpg",
-    readMoreLink: "/blog/2", // Added readMoreLink
-  },
-  {
-    id: 3,
-    title: "Nuevo programa de alfabetizacion",
-    excerpt: "Conoce nuestro programa de alfabetizacion,le damos acceso a  la eduacion en comunidades vulnerables ",
-    date: "2023-05-20",
-    category: "Educación",
-    imageUrl: "/blog-edu2.jpg",
-    readMoreLink: "/blog/3", // Added readMoreLink
-  },
-  {
-    id: 4,
-    title: "Talleres de nutrición para familias en situación vulnerable",
-    excerpt: "Implementamos talleres para mejorar la alimentación en comunidades necesitadas",
-    date: "2023-05-18",
-    category: "Salud",
-    imageUrl: "/blog-salu2.jpg",
-    readMoreLink: "/blog/4", // Added readMoreLink
-  },
-  {
-    id: 5,
-    title: "Programa escolar para apoyar el desarrollo de habilidades",
-    excerpt: "Trabajamos con organizaciones talleres y cursos para brindar la oportunidad a ninos necesitados",
-    date: "2023-05-10",
-    category: "Educación",
-    imageUrl: "/blog-edu3.jpg",
-    readMoreLink: "/blog/5", // Added readMoreLink
-  },
-  {
-    id: 6,
-    title: "Programa de vacunación en zonas de difícil acceso",
-    excerpt: "Llevamos salud a comunidades remotas con nuestro programa de vacunación",
-    date: "2023-05-08",
-    category: "Salud",
-    imageUrl: "/blog-salu3.jpg",
-    readMoreLink: "/blog/6", // Added readMoreLink
-  },
-  {
-    id: 7,
-    title: "Programa Deportivo para ninos",
-    excerpt: "Ayudamos a diferentes ninos de las comunidades a tener la oportunidad se compartir la pasion por el deporte",
-    date: "2023-04-30",
-    category: "Educación",
-    imageUrl: "/blog-edu4.jpg",
-    readMoreLink: "/blog/7", // Added readMoreLink
-  },
-  {
-    id: 8,
-    title: "Campaña de prevención de enfermedades",
-    excerpt: "Educación y prevención para mejorar la calidad de vida",
-    date: "2023-04-28",
-    category: "Salud",
-    imageUrl: "/blog-salu4.jpg",
-    readMoreLink: "/blog/8", // Added readMoreLink
-  },
-]
-
-const categories = ["Todos", "Educación", "Salud"]
+const categories = ["Todos", "Educación", "Salud"];
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.5 },
-}
+};
 
 const stagger = {
   animate: {
@@ -128,18 +45,18 @@ const stagger = {
       staggerChildren: 0.1,
     },
   },
-}
+};
 
 export default function BlogPage() {
-  const [selectedCategory, setSelectedCategory] = useState("Todos")
-  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("Todos");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const filteredPosts = posts.filter(
     (post) =>
       (selectedCategory === "Todos" || post.category === selectedCategory) &&
       (post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchTerm.toLowerCase())),
-  )
+      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   return (
     <motion.div className="container mx-auto px-4 py-12" initial="initial" animate="animate" variants={stagger}>
@@ -181,7 +98,7 @@ export default function BlogPage() {
 
       <motion.div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3" variants={stagger}>
         {filteredPosts.map((post) => (
-          <BlogPost key={post.id} {...post} />
+          <BlogPost key={post.id} {...post} readMoreLink={`/blog/${post.id}`} />
         ))}
       </motion.div>
 
@@ -192,7 +109,7 @@ export default function BlogPage() {
       )}
 
       <motion.div variants={fadeInUp} className="mt-12 text-center">
-      <Button asChild>
+        <Button asChild>
           <Link href="https://www.facebook.com/fundacionfodins" target="_blank" rel="noopener noreferrer">
             Ver Más Artículos
             <ChevronRight className="ml-2 h-4 w-4" />
@@ -200,7 +117,7 @@ export default function BlogPage() {
         </Button>
       </motion.div>
     </motion.div>
-  )
+  );
 }
 
 function FeaturedPost({ title, imageUrl, date, category }: FeaturedPostProps) {
@@ -239,14 +156,13 @@ function BlogPost({ title, excerpt, date, category, imageUrl, readMoreLink }: Bl
         </CardContent>
         <CardFooter className="mt-auto">
           <Button variant="outline" className="w-full" asChild>
-            <a href={readMoreLink}>
+            <Link href={readMoreLink || "#"}>
               Leer Más
               <ChevronRight className="ml-2 h-4 w-4" />
-            </a>
+            </Link>
           </Button>
         </CardFooter>
       </Card>
     </motion.div>
-  )
+  );
 }
-
