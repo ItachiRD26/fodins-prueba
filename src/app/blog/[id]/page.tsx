@@ -6,15 +6,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { posts } from "@/data/posts";
 
 interface PostProps {
-  params: {
-    id: string;
-  };
+  params: { id: string }; // ✅ Asegura que params es un objeto simple
 }
+
 
 export async function generateMetadata({ params }: PostProps) {
   const post = posts.find((p) => p.id === params.id);
   return { title: post ? post.title : "Post no encontrado" };
 }
+
 
 export default function BlogPost({ params }: PostProps) {
   const post = posts.find((p) => p.id === params.id);

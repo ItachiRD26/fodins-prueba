@@ -1,11 +1,11 @@
-import Link from "next/link"
+import Link from "next/link";
 
 interface BlogPostProps {
-  id: number
-  title: string
-  excerpt: string
-  date: string
-  category: string
+  id: number;
+  title: string;
+  excerpt: string;
+  date: string;
+  category: string;
 }
 
 export function BlogPost({ id, title, excerpt, date, category }: BlogPostProps) {
@@ -20,6 +20,5 @@ export function BlogPost({ id, title, excerpt, date, category }: BlogPostProps) 
         <span className="bg-secondary/10 text-secondary px-2 py-1 rounded">{category}</span>
       </div>
     </article>
-  )
+  );
 }
-
