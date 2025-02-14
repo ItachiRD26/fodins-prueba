@@ -89,7 +89,13 @@ const posts = [
   },
 ]
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+interface PageProps {
+  params: {
+    id: string
+  }
+}
+
+export async function generateMetadata({ params }: PageProps) {
   const post = posts.find((post) => post.id === params.id)
 
   if (!post) {
@@ -103,7 +109,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   }
 }
 
-export default function BlogPost({ params }: { params: { id: string } }) {
+export default function BlogPost({ params }: PageProps) {
   const post = posts.find((post) => post.id === params.id)
 
   if (!post) {
@@ -158,4 +164,3 @@ export default function BlogPost({ params }: { params: { id: string } }) {
     </div>
   )
 }
-
