@@ -1,6 +1,6 @@
 // hooks/useDataFetcher.ts
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { ref, onValue } from "firebase/database"; // Usa métodos de Realtime Database
 import { db } from "../firebaseConfig";
 import { Verse, Video, Event } from "../types";
 
@@ -9,22 +9,40 @@ export const useDataFetcher = () => {
   const [videos, setVideos] = useState<Video[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
 
-  const fetchData = async () => {
-    try {
-      const versesSnapshot = await getDocs(collection(db, "verses"));
-      setVerses(versesSnapshot.docs.map((doc) => doc.data() as Verse));
-
-      const videosSnapshot = await getDocs(collection(db, "videos"));
-      setVideos(videosSnapshot.docs.map((doc) => doc.data() as Video));
-
-      const eventsSnapshot = await getDocs(collection(db, "events"));
-      setEvents(eventsSnapshot.docs.map((doc) => doc.data() as Event));
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
   useEffect(() => {
+    const fetchData = () => {
+      try {
+        // Obtener versículos
+        const versesRef = ref(db, "verses");
+        onValue(versesRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            setVerses(Object.values(data));
+          }
+        });
+
+        // Obtener videos
+        const videosRef = ref(db, "videos");
+        onValue(videosRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            setVideos(Object.values(data));
+          }
+        });
+
+        // Obtener eventos
+        const eventsRef = ref(db, "events");
+        onValue(eventsRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            setEvents(Object.values(data));
+          }
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
     fetchData();
   }, []);
 

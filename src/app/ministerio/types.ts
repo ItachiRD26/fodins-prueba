@@ -1,11 +1,11 @@
 export type Verse = {
-  id: string;
+  id?: string;
   reference: string;
   text: string;
 };
 
 export type Video = {
-  id: string;
+  id?: string;
   title: string;
   url: string;
 };
