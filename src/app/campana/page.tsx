@@ -3,7 +3,6 @@
 import type React from "react"
 
 import { motion } from "framer-motion"
-import Image from "next/image"
 import { useState, useEffect } from "react"
 import { Container } from "@/components/ui/container"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
