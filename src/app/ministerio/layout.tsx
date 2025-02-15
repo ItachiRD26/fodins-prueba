@@ -1,26 +1,26 @@
-import "../globals.css";
-import { Inter } from "next/font/google";
-import type React from "react";
+import type { Metadata } from "next"
+import "../globals.css"
+import { inter } from "../fonts" // Importa la fuente Inter
 
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata = {
+export const metadata: Metadata = {
   title: "Ministerio Nueva Vida",
   description: "Espacio de fe, amor y comunidad",
   icons: {
     icon: "/logoiglesia.png",
   },
-};
+}
 
 export default function MinisterioLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
-    <div className={inter.className}>
-      {/* Aquí puedes agregar un header o navbar específico para el ministerio */}
-      {children}
-    </div>
-  );
+    <html lang="es" className={inter.variable}>
+      <body className={inter.className}>
+        {/* Aquí puedes agregar un header o navbar específico para el ministerio */}
+        {children}
+      </body>
+    </html>
+  )
 }

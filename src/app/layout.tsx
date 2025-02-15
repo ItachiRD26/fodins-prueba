@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { inter, roboto_mono } from "./fonts";
-import RootLayoutClient from "./layout.client"; // Importa el Client Component
+import type { Metadata } from "next"
+import "./globals.css"
+import { inter, roboto_mono } from "./fonts"
+import RootLayoutClient from "./layout.client" // Importa el Client Component
 
 export const metadata: Metadata = {
   title: "FODINS",
@@ -10,12 +10,12 @@ export const metadata: Metadata = {
   icons: {
     icon: "/logo.png",
   },
-};
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="es" className={`h-full ${inter.variable} ${roboto_mono.variable}`}>
@@ -23,5 +23,5 @@ export default function RootLayout({
         <RootLayoutClient>{children}</RootLayoutClient>
       </body>
     </html>
-  );
+  )
 }
