@@ -1,39 +1,60 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { collection, getDocs, query, orderBy } from "firebase/firestore"
-import { db } from "../firebaseConfig"
-import type { Verse, Video, Event } from "../types"
+import { useEffect, useState } from "react";
+import { ref, get } from "firebase/database"; // Import Realtime Database methods
+import { db } from "../firebaseConfig"; // Ensure this is the Realtime Database instance
+import type { Verse, Video, Event } from "../types";
 
 export function useDataFetcher() {
-  const [verses, setVerses] = useState<Verse[]>([])
-  const [videos, setVideos] = useState<Video[]>([])
-  const [posts, setPosts] = useState<Event[]>([])
+  const [verses, setVerses] = useState<Verse[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const versesRef = collection(db, "verses")
-        const versesQuery = query(versesRef, orderBy("createdAt", "desc"))
-        const versesSnapshot = await getDocs(versesQuery)
-        setVerses(versesSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as unknown as Verse))
+        // Fetch verses from Realtime Database
+        const versesRef = ref(db, "verses");
+        const versesSnapshot = await get(versesRef);
+        if (versesSnapshot.exists()) {
+          const versesData = versesSnapshot.val();
+          const versesArray = Object.keys(versesData).map((key) => ({
+            id: key, // Add the unique key as the ID
+            ...versesData[key], // Spread the verse data
+          })) as Verse[];
+          setVerses(versesArray);
+        }
 
-        const videosRef = collection(db, "videos")
-        const videosQuery = query(videosRef, orderBy("uploadedAt", "desc"))
-        const videosSnapshot = await getDocs(videosQuery)
-        setVideos(videosSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Video))
+        // Fetch videos from Realtime Database
+        const videosRef = ref(db, "videos");
+        const videosSnapshot = await get(videosRef);
+        if (videosSnapshot.exists()) {
+          const videosData = videosSnapshot.val();
+          const videosArray = Object.keys(videosData).map((key) => ({
+            id: key, // Add the unique key as the ID
+            ...videosData[key], // Spread the video data
+          })) as Video[];
+          setVideos(videosArray);
+        }
 
-        const postsRef = collection(db, "posts")
-        const postsQuery = query(postsRef, orderBy("createdAt", "desc"))
-        const postsSnapshot = await getDocs(postsQuery)
-        setPosts(postsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Event))
+        // Fetch events from Realtime Database
+        const eventsRef = ref(db, "events");
+        const eventsSnapshot = await get(eventsRef);
+        if (eventsSnapshot.exists()) {
+          const eventsData = eventsSnapshot.val();
+          const eventsArray = Object.keys(eventsData).map((key) => ({
+            id: key, // Add the unique key as the ID
+            ...eventsData[key], // Spread the event data
+          })) as Event[];
+          setEvents(eventsArray);
+        }
       } catch (error) {
-        console.error("Error fetching data:", error)
+        console.error("Error fetching data:", error);
       }
     }
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
-  return { verses, videos, posts }
+  return { verses, videos, events };
 }

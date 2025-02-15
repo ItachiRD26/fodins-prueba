@@ -1,20 +1,18 @@
-// types.ts
-export interface Verse {
+export type Verse = {
   id: string;
+  reference: string;
   text: string;
-}
+};
 
-export interface Video {
+export type Video = {
   id: string;
+  title: string;
   url: string;
-  title: string;
-}
+};
 
-export interface Event {
-  description: ReactNode;
+export type Event = {
+  id?: string; // Opcional, dependiendo de tu uso
   title: string;
-  imageUrl: string | StaticImport;
-  id: string;
-  name: string;
-  date: string;
-}
+  description: string;
+  imageUrl: string; // URL de la imagen
+};

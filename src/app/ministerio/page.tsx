@@ -8,38 +8,47 @@ import { ContactSection } from "./components/contact";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import { useEffect, useState } from "react";
-import { ref, onValue } from "firebase/database";
-import { db } from "./firebaseConfig";
+import { ref as dbRef, onValue } from "firebase/database"; // Cambia el nombre de `ref` para evitar conflictos
+import { db } from "./firebaseConfig"; // Solo necesitamos `db` ahora
+import type { Event } from "./types"; // Importa el tipo `Event`
 
 export default function Home() {
   const [verses, setVerses] = useState([]);
   const [videos, setVideos] = useState([]);
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<Event[]>([]); // Define el tipo de `events`
 
   useEffect(() => {
-    const versesRef = ref(db, "verses");
-    onValue(versesRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        setVerses(Object.values(data));
-      }
-    });
+    const fetchData = async () => {
+      // Obtener versículos
+      const versesRef = dbRef(db, "verses");
+      onValue(versesRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          setVerses(Object.values(data));
+        }
+      });
 
-    const videosRef = ref(db, "videos");
-    onValue(videosRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        setVideos(Object.values(data));
-      }
-    });
+      // Obtener videos
+      const videosRef = dbRef(db, "videos");
+      onValue(videosRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          setVideos(Object.values(data));
+        }
+      });
 
-    const eventsRef = ref(db, "events");
-    onValue(eventsRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        setEvents(Object.values(data));
-      }
-    });
+      // Obtener eventos
+      const eventsRef = dbRef(db, "events");
+      onValue(eventsRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const eventsArray = Object.values(data) as Event[]; // Asegura que `data` sea del tipo `Event[]`
+          setEvents(eventsArray);
+        }
+      });
+    };
+
+    fetchData();
   }, []);
 
   return (
