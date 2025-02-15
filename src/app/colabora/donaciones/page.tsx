@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { motion } from "framer-motion"
 import Image from "next/image"
 import { useState } from "react"
@@ -12,7 +14,7 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js"
 import { PayPalDonationButton } from "@/components/paypaldonationsbutton"
 import { Notification } from "@/components/notification"
 import { useRouter } from "next/navigation"
-import type React from "react"
+import type { OnApproveData, OrderResponseBody } from "@paypal/paypal-js"
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -48,7 +50,7 @@ export default function DonacionesPage() {
     setEmail("")
   }
 
-  const handlePayPalSuccess = (details: { payer?: { name?: { given_name?: string } } }) => {
+  const handlePayPalSuccess = (details: OnApproveData & OrderResponseBody) => {
     const payerName = details.payer?.name?.given_name || "Cliente"
     setNotification({
       message: `¡Gracias ${payerName}! Tu donación ha sido procesada con éxito.`,
@@ -60,7 +62,7 @@ export default function DonacionesPage() {
     }, 2000)
   }
 
-  const handlePayPalError = (error: Error) => {
+  const handlePayPalError = (error: Record<string, unknown>) => {
     setNotification({
       message: "Ocurrió un error al procesar tu donación. Por favor, inténtalo de nuevo o contacta con soporte.",
       type: "error",
@@ -71,10 +73,9 @@ export default function DonacionesPage() {
   return (
     <PayPalScriptProvider
       options={{
-        clientId: "Aa0dIyE6M5GJqdTo6TBO9Ufdjg2sCQyi-6vic3TZcLYfjN0wHT-p0xsQJix9NMmsZU0HEbF1ZqdlI0uN", // Client ID de producción
+        clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "",
         currency: "USD",
         intent: "capture",
-        locale: "en_US",
       }}
     >
       <motion.main
@@ -249,3 +250,4 @@ export default function DonacionesPage() {
     </PayPalScriptProvider>
   )
 }
+

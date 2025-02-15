@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { motion } from "framer-motion"
 import Image from "next/image"
 import { useState, useEffect } from "react"
@@ -7,11 +9,12 @@ import { Container } from "@/components/ui/container"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js"
 import { PayPalDonationButton } from "@/components/paypaldonationsbutton"
 import { Notification } from "@/components/notification"
 import { useRouter } from "next/navigation"
 import { database, ref, set, onValue } from "@/firebase"
+import type { OnApproveData, OrderResponseBody } from "@paypal/paypal-js"
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -59,55 +62,54 @@ export default function CampanaPage() {
     setEmail("")
   }
 
-  const handlePayPalSuccess = (details: { payer: { name: { given_name: string } } }) => {
-    const payerName = details.payer?.name?.given_name || "Cliente";
-    const amount = parseFloat(donationAmount);
-  
+  const handlePayPalSuccess = (details: OnApproveData & OrderResponseBody) => {
+    const payerName = details.payer?.name?.given_name || "Cliente"
+    const amount = Number.parseFloat(donationAmount)
+
     if (isNaN(amount)) {
       setNotification({
         message: "El monto de la donación no es válido.",
         type: "error",
-      });
-      return;
+      })
+      return
     }
-  
+
     // Actualizar el total de donaciones en Firebase
-    const newTotal = totalDonations + amount;
+    const newTotal = totalDonations + amount
     set(ref(database, "totalDonations"), newTotal)
       .then(() => {
         setNotification({
           message: `¡Gracias ${payerName}! Tu donación ha sido procesada con éxito.`,
           type: "success",
-        });
-        resetForm();
+        })
+        resetForm()
         setTimeout(() => {
-          router.push("/campana/gracias");
-        }, 2000);
+          router.push("/campana/gracias")
+        }, 2000)
       })
       .catch((error) => {
-        console.error("Error al actualizar el total de donaciones:", error);
+        console.error("Error al actualizar el total de donaciones:", error)
         setNotification({
           message: "Hubo un error al procesar tu donación. Por favor, inténtalo de nuevo.",
           type: "error",
-        });
-      });
-  };
-  
-  const handlePayPalError = (error: Error) => {
+        })
+      })
+  }
+
+  const handlePayPalError = (error: Record<string, unknown>) => {
     setNotification({
       message: "Ocurrió un error al procesar tu donación. Por favor, inténtalo de nuevo o contacta con soporte.",
       type: "error",
-    });
-    console.error("Error al cargar el SDK de PayPal:", error);
-  };
+    })
+    console.error("Error al cargar el SDK de PayPal:", error)
+  }
 
   return (
     <PayPalScriptProvider
       options={{
-        clientId: "Aa0dIyE6M5GJqdTo6TBO9Ufdjg2sCQyi-6vic3TZcLYfjN0wHT-p0xsQJix9NMmsZU0HEbF1ZqdlI0uN", // Client ID de producción
+        clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "",
         currency: "USD",
         intent: "capture",
-        locale: "en_US", // Configura el idioma en inglés
       }}
     >
       <motion.main
@@ -128,14 +130,7 @@ export default function CampanaPage() {
 
         {/* Hero Section */}
         <motion.section className="relative h-[60vh] min-h-[500px]" variants={fadeIn}>
-          <Image
-            src="/campana5.jpg" // Cambia por la imagen de tu campaña
-            alt="Campaña de Donación"
-            fill
-            className="object-cover"
-            sizes="100vw"
-            priority
-          />
+          <Image src="/campana5.jpg" alt="Campaña de Donación" fill className="object-cover" sizes="100vw" priority />
           <div className="absolute inset-0 bg-gradient-to-r from-black to-transparent bg-opacity-60 flex items-center justify-start">
             <Container>
               <div className="max-w-2xl">
@@ -154,13 +149,17 @@ export default function CampanaPage() {
             <div>
               <h2 className="text-4xl font-bold mb-6">Sobre la Campaña</h2>
               <p className="text-xl text-gray-600 leading-relaxed">
-                Nuestra campaña busca ayudar a niños en situación de calle que no cuentan con un hogar ni con acceso a educación o alimentación adecuada. A través de este programa de apadrinamiento, queremos brindarles estabilidad y una oportunidad para un futuro mejor.
+                Nuestra campaña busca ayudar a niños en situación de calle que no cuentan con un hogar ni con acceso a
+                educación o alimentación adecuada. A través de este programa de apadrinamiento, queremos brindarles
+                estabilidad y una oportunidad para un futuro mejor.
               </p>
             </div>
             <div>
               <h2 className="text-4xl font-bold mb-6">Nuestro Objetivo</h2>
               <p className="text-xl text-gray-600 leading-relaxed">
-                Queremos recaudar fondos suficientes para cubrir las necesidades básicas de estos niños, incluyendo educación, alimentación, ropa y asistencia médica. Cada donación contribuye a mejorar su calidad de vida y brindarles una segunda oportunidad.
+                Queremos recaudar fondos suficientes para cubrir las necesidades básicas de estos niños, incluyendo
+                educación, alimentación, ropa y asistencia médica. Cada donación contribuye a mejorar su calidad de vida
+                y brindarles una segunda oportunidad.
               </p>
             </div>
           </motion.div>
@@ -241,7 +240,7 @@ export default function CampanaPage() {
                     <div className="w-full bg-gray-200 rounded-full h-4">
                       <div
                         className="bg-primary h-4 rounded-full"
-                        style={{ width: `${(totalDonations / 10000) * 100}%` }} // Ajusta el objetivo de la campaña (ej. $10,000)
+                        style={{ width: `${(totalDonations / 10000) * 100}%` }}
                       ></div>
                     </div>
                     <p className="text-gray-600">Objetivo: $10,000</p>
@@ -255,3 +254,4 @@ export default function CampanaPage() {
     </PayPalScriptProvider>
   )
 }
+
