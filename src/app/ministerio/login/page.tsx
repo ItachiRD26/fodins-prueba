@@ -1,5 +1,5 @@
-// app/ministerio/login/page.tsx
 "use client";
+
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
@@ -14,8 +14,23 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push("/ministerio/admin"); // Redirige al panel de administración
+      // Autenticar al usuario con Firebase
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Verificar si el usuario está autorizado en el servidor
+      const response = await fetch("/api/verifyUser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ uid: user.uid }),
+      });
+
+      const data = await response.json();
+      if (data.message === "Usuario verificado") {
+        router.push("/ministerio/admin"); // Redirigir al panel de administración
+      } else {
+        setError("Usuario no autorizado");
+      }
     } catch (error) {
       setError("Error al iniciar sesión. Verifica tus credenciales.");
       console.error(error);
@@ -59,12 +74,8 @@ export default function LoginPage() {
   );
 }
 
-// Definir un tipo para los estilos
-type Styles = {
-  [key: string]: React.CSSProperties;
-};
-
-const styles: Styles = {
+// Estilos
+const styles = {
   container: {
     display: "flex",
     justifyContent: "center",
@@ -84,12 +95,12 @@ const styles: Styles = {
     fontSize: "24px",
     fontWeight: "600",
     marginBottom: "1.5rem",
-    textAlign: "center" as const, // Especificar el tipo correcto para textAlign
+    textAlign: "center" as const, // Asegura que textAlign sea del tipo correcto
     color: "#333",
   },
   form: {
     display: "flex",
-    flexDirection: "column" as const, // Especificar el tipo correcto para flexDirection
+    flexDirection: "column" as const, // Asegura que flexDirection sea del tipo correcto
   },
   formGroup: {
     marginBottom: "1rem",
@@ -123,6 +134,6 @@ const styles: Styles = {
     color: "#dc3545",
     fontSize: "14px",
     marginBottom: "1rem",
-    textAlign: "center" as const, // Especificar el tipo correcto para textAlign
+    textAlign: "center" as const, // Asegura que textAlign sea del tipo correcto
   },
 };

@@ -130,7 +130,15 @@ export default function CampanaPage() {
 
         {/* Hero Section */}
         <motion.section className="relative h-[60vh] min-h-[500px]" variants={fadeIn}>
-          <Image src="/campana5.jpg" alt="Campaña de Donación" fill className="object-cover" sizes="100vw" priority />
+          <video
+            autoPlay
+            muted
+            loop
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="/campananinos.mp4" type="video/mp4" />
+            Tu navegador no soporta videos HTML5.
+          </video>
           <div className="absolute inset-0 bg-gradient-to-r from-black to-transparent bg-opacity-60 flex items-center justify-start">
             <Container>
               <div className="max-w-2xl">
@@ -153,6 +161,11 @@ export default function CampanaPage() {
                 educación o alimentación adecuada. A través de este programa de apadrinamiento, queremos brindarles
                 estabilidad y una oportunidad para un futuro mejor.
               </p>
+              <p className="text-xl text-gray-600 leading-relaxed mt-4">
+                Muchos de estos niños no tienen acceso a una educación básica, lo que limita sus oportunidades de desarrollo.
+                Con tu ayuda, podemos proporcionarles materiales escolares, uniformes y acceso a escuelas, dándoles la
+                oportunidad de aprender y crecer en un entorno seguro.
+              </p>
             </div>
             <div>
               <h2 className="text-4xl font-bold mb-6">Nuestro Objetivo</h2>
@@ -160,6 +173,9 @@ export default function CampanaPage() {
                 Queremos recaudar fondos suficientes para cubrir las necesidades básicas de estos niños, incluyendo
                 educación, alimentación, ropa y asistencia médica. Cada donación contribuye a mejorar su calidad de vida
                 y brindarles una segunda oportunidad.
+              </p>
+              <p className="text-xl text-gray-600 leading-relaxed mt-4">
+                Nuestro objetivo es recaudar $10,000 para ayudar a 100 niños este año. Con tu apoyo, podemos lograrlo.
               </p>
             </div>
           </motion.div>
@@ -254,4 +270,3 @@ export default function CampanaPage() {
     </PayPalScriptProvider>
   )
 }
-

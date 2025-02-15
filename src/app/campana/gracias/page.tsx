@@ -16,6 +16,10 @@ export default function GraciasPage() {
             nuestra misión de transformar vidas.
           </p>
           <p className="text-lg mb-8">
+            Estamos comprometidos a ayudar a tantos niños como sea posible, brindándoles acceso a educación, alimentación
+            y un hogar seguro. Tu donación nos acerca un paso más a ese objetivo.
+          </p>
+          <p className="text-lg mb-8">
             Te enviaremos un recibo de tu donación por correo electrónico. Si tienes alguna pregunta, no dudes en
             contactarnos.
           </p>
@@ -27,4 +31,3 @@ export default function GraciasPage() {
     </Container>
   )
 }
-

@@ -1,4 +1,3 @@
-// src/pages/api/verifyUser.js
 import { verifyUser } from '../../firebase/firebaseAdmin';
 
 export default async function handler(req, res) {

@@ -14,35 +14,32 @@ export function ContactSection() {
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    setIsLoading(true); // Activar el estado de carga
-    setErrorMessage(""); // Limpiar mensajes de error anteriores
-    setSuccessMessage(""); // Limpiar mensajes de éxito anteriores
-
+    setIsLoading(true);
+    setErrorMessage("");
+    setSuccessMessage("");
+  
     try {
-      // Enviar los datos al servidor
-      const response = await fetch("http://localhost:3001/enviar-correo-contacto", {
+      const response = await fetch("/api/enviar-correo-contacto", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ name, email, message }),
       });
-
+  
       if (!response.ok) {
         throw new Error("Error al enviar el mensaje");
       }
-
-      // Mostrar mensaje de éxito
+  
       setSuccessMessage("Mensaje enviado correctamente. ¡Gracias por contactarnos!");
       setName("");
       setEmail("");
       setMessage("");
     } catch (error) {
-      // Mostrar mensaje de error
       setErrorMessage("Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo.");
       console.error("Error:", error);
     } finally {
-      setIsLoading(false); // Desactivar el estado de carga
+      setIsLoading(false);
     }
   };
 

@@ -33,32 +33,32 @@ export default function HazteSocioPage() {
   const { register, handleSubmit, formState: { errors } } = useForm<DatosSocio>();
 
   const onSubmit = async (data: DatosSocio) => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const response = await fetch("http://localhost:3001/enviar-correo-socio", {
+      const response = await fetch("/api/enviar-correo-socio", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      })
-
+      });
+  
       if (response.ok) {
-        setEnviado(true)
-        setShowNotification(true)
-        setTimeout(() => setShowNotification(false), 5000)
+        setEnviado(true);
+        setShowNotification(true);
+        setTimeout(() => setShowNotification(false), 5000);
       } else {
-        const errorData = await response.json()
-        console.error("Error del backend:", errorData)
-        alert("Hubo un error al enviar el formulario. Por favor, inténtelo de nuevo.")
+        const errorData = await response.json();
+        console.error("Error del backend:", errorData);
+        alert("Hubo un error al enviar el formulario. Por favor, inténtelo de nuevo.");
       }
     } catch (error) {
-      console.error("Error:", error)
-      alert("Hubo un error al enviar el formulario. Por favor, inténtelo de nuevo.")
+      console.error("Error:", error);
+      alert("Hubo un error al enviar el formulario. Por favor, inténtelo de nuevo.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <motion.main

@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Ministerio Nueva Vida",
   description: "Espacio de fe, amor y comunidad",
+  icons: {
+    icon: "/logoiglesia.png",
+  },
 };
 
 export default function MinisterioLayout({

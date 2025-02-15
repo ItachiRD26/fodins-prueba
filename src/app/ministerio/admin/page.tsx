@@ -9,6 +9,7 @@ import { db, storage, auth } from "../firebaseConfig";
 import { getVerse } from "../utils/bibleUtils";
 import bibleIndex from "../data/biblia/index.json";
 
+
 export default function AdminPanel() {
   const [newVerseText, setNewVerseText] = useState("");
   const [newVerseReference, setNewVerseReference] = useState("");

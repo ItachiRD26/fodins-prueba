@@ -1,5 +1,5 @@
-import { initializeApp } from "firebase/app"
-import { getDatabase, ref, set, onValue, get } from "firebase/database"
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set, onValue, get } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAnhsdxiiWyji28STAdJsuQgsW8WZRB9oI",
@@ -10,10 +10,10 @@ const firebaseConfig = {
   appId: "1:123211979780:web:98d32bdb0fb2ed4a056951",
   measurementId: "G-KL2RNPKC5W",
   databaseURL: "https://fodins-d60da-default-rtdb.firebaseio.com",
-}
+};
 
-const app = initializeApp(firebaseConfig)
-const database = getDatabase(app)
+// Inicializa Firebase con un nombre único
+const appPrincipal = initializeApp(firebaseConfig, "appPrincipal");
+const database = getDatabase(appPrincipal);
 
-export { database, ref, set, onValue, get }
-
+export { database, ref, set, onValue, get };
