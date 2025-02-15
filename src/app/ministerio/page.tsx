@@ -8,18 +8,17 @@ import { ContactSection } from "./components/contact";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import { useEffect, useState } from "react";
-import { ref as dbRef, onValue } from "firebase/database"; // Cambia el nombre de `ref` para evitar conflictos
-import { db } from "./firebaseConfig"; // Solo necesitamos `db` ahora
-import type { Event } from "./types"; // Importa el tipo `Event`
+import { ref as dbRef, onValue } from "firebase/database";
+import { db } from "./firebaseConfig";
+import type { Event } from "./types";
 
 export default function Home() {
   const [verses, setVerses] = useState([]);
   const [videos, setVideos] = useState([]);
-  const [events, setEvents] = useState<Event[]>([]); // Define el tipo de `events`
+  const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      // Obtener versículos
       const versesRef = dbRef(db, "verses");
       onValue(versesRef, (snapshot) => {
         const data = snapshot.val();
@@ -28,7 +27,6 @@ export default function Home() {
         }
       });
 
-      // Obtener videos
       const videosRef = dbRef(db, "videos");
       onValue(videosRef, (snapshot) => {
         const data = snapshot.val();
@@ -37,12 +35,11 @@ export default function Home() {
         }
       });
 
-      // Obtener eventos
       const eventsRef = dbRef(db, "events");
       onValue(eventsRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
-          const eventsArray = Object.values(data) as Event[]; // Asegura que `data` sea del tipo `Event[]`
+          const eventsArray = Object.values(data) as Event[];
           setEvents(eventsArray);
         }
       });
@@ -54,7 +51,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 px-4 md:px-6">
         <HeroSection />
         <VerseSection verses={verses} />
         <VideoSection videos={videos} />

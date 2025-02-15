@@ -10,22 +10,22 @@ import Image from "next/image";
 const navItems = [
   {
     name: "CONÓCENOS",
-    href: "",
+    href: "", // Este no tiene un href válido, pero tiene subitems
     subitems: [{ name: "Quiénes somos", href: "/conocenos/quienes-somos" }],
   },
-  { name: "PROYECTOS", href: "/proyectos" },
+  { name: "PROYECTOS", href: "/proyectos" }, // Tiene un href válido
   {
     name: "COLABORA",
-    href: "",
+    href: "", // Este no tiene un href válido, pero tiene subitems
     subitems: [
       { name: "Hazte socio", href: "/colabora/hazte-socio" },
       { name: "Donaciones", href: "/colabora/donaciones" },
       { name: "Voluntariado", href: "/colabora/voluntariado" },
     ],
   },
-  { name: "CAMAPAÑA", href: "/campana" },
-  { name: "BLOG", href: "/blog" },
-  { name: "MINISTERIO", href: "/ministerio" },
+  { name: "CAMPAÑA", href: "/campana" }, // Tiene un href válido
+  { name: "BLOG", href: "/blog" }, // Tiene un href válido
+  { name: "MINISTERIO", href: "/ministerio" }, // Tiene un href válido
 ];
 
 const socialLinks = [
@@ -151,60 +151,74 @@ export function Navbar() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="md:hidden">
-            <div className="pt-2 pb-3 space-y-1">
-              {navItems.map((item) => (
-                <div key={item.name}>
-                  <button
-                    onClick={() => {
-                      if (item.href) {
-                        handleNavItemClick(item.href);
-                      } else {
-                        setActiveDropdown(activeDropdown === item.name ? "" : item.name);
-                      }
-                    }}
-                    className={`w-full text-left pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                      pathname === item.href
-                        ? "bg-primary-50 border-primary text-primary"
-                        : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-                    }`}
-                  >
-                    {item.name}
-                    {item.subitems && (
-                      <ChevronDown
-                        className={`ml-1 h-4 w-4 inline transition-transform duration-200 ${
-                          activeDropdown === item.name ? "transform rotate-180" : ""
-                        }`}
-                      />
-                    )}
-                  </button>
-                  {item.subitems && activeDropdown === item.name && (
-                    <div className="pl-6 space-y-1">
-                      {item.subitems.map((subitem) => (
-                        <Link
-                          key={subitem.name}
-                          href={subitem.href}
-                          className="block py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                          onClick={() => handleNavItemClick(subitem.href)}
-                        >
-                          {subitem.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
+  <div className="md:hidden">
+    <div className="pt-2 pb-3 space-y-1">
+      {navItems.map((item) => (
+        <div key={item.name}>
+          {item.subitems ? (
+            // Elemento con subitems
+            <>
+              <button
+                onClick={() => {
+                  setActiveDropdown(activeDropdown === item.name ? "" : item.name);
+                }}
+                className={`w-full text-left pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                  pathname === item.href
+                    ? "bg-primary-50 border-primary text-primary"
+                    : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                }`}
+              >
+                {item.name}
+                <ChevronDown
+                  className={`ml-1 h-4 w-4 inline transition-transform duration-200 ${
+                    activeDropdown === item.name ? "transform rotate-180" : ""
+                  }`}
+                />
+              </button>
+              {activeDropdown === item.name && (
+                <div className="pl-6 space-y-1">
+                  {item.subitems.map((subitem) => (
+                    <Link
+                      key={subitem.name}
+                      href={subitem.href}
+                      className="block py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                      onClick={closeMobileMenu}
+                    >
+                      {subitem.name}
+                    </Link>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <div className="pt-4 pb-3 border-t border-gray-200">
-              <div className="flex items-center px-4">
-                <div className="flex-shrink-0">
-                  <Button className="w-full" onClick={() => handleNavItemClick("/colabora/hazte-socio")}>
-                    HAZTE SOCIO
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+              )}
+            </>
+          ) : (
+            // Elemento sin subitems (enlace directo)
+            <Link
+              href={item.href}
+              className={`w-full text-left pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                pathname === item.href
+                  ? "bg-primary-50 border-primary text-primary"
+                  : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+              }`}
+              onClick={closeMobileMenu}
+            >
+              {item.name}
+            </Link>
+          )}
+        </div>
+      ))}
+    </div>
+    <div className="pt-4 pb-3 border-t border-gray-200">
+      <div className="flex items-center px-4">
+        <div className="flex-shrink-0">
+          <Button asChild>
+            <Link href="/colabora/hazte-socio" className="w-full">
+              HAZTE SOCIO
+            </Link>
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>
         )}
       </nav>
     </header>

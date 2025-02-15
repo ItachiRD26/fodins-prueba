@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import "../globals.css"
-import { inter } from "../fonts" // Importa la fuente Inter
+import { inter } from "../fonts"
 
 export const metadata: Metadata = {
   title: "Ministerio Nueva Vida",
@@ -16,11 +16,10 @@ export default function MinisterioLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es" className={inter.variable}>
-      <body className={inter.className}>
-        {/* Aquí puedes agregar un header o navbar específico para el ministerio */}
+    <>
+      <div className={inter.className}>
         {children}
-      </body>
-    </html>
+      </div>
+    </>
   )
 }
