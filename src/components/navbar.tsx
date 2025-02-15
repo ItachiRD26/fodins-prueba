@@ -44,8 +44,6 @@ export function Navbar() {
     setActiveDropdown("");
   }, []);
 
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleNavItemClick = useCallback(
     (href: string) => {
       if (href) {
@@ -153,74 +151,74 @@ export function Navbar() {
         </div>
 
         {mobileMenuOpen && (
-  <div className="md:hidden">
-    <div className="pt-2 pb-3 space-y-1">
-      {navItems.map((item) => (
-        <div key={item.name}>
-          {item.subitems ? (
-            // Elemento con subitems
-            <>
-              <button
-                onClick={() => {
-                  setActiveDropdown(activeDropdown === item.name ? "" : item.name);
-                }}
-                className={`w-full text-left pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                  pathname === item.href
-                    ? "bg-primary-50 border-primary text-primary"
-                    : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-                }`}
-              >
-                {item.name}
-                <ChevronDown
-                  className={`ml-1 h-4 w-4 inline transition-transform duration-200 ${
-                    activeDropdown === item.name ? "transform rotate-180" : ""
-                  }`}
-                />
-              </button>
-              {activeDropdown === item.name && (
-                <div className="pl-6 space-y-1">
-                  {item.subitems.map((subitem) => (
+          <div className="md:hidden">
+            <div className="pt-2 pb-3 space-y-1">
+              {navItems.map((item) => (
+                <div key={item.name}>
+                  {item.subitems ? (
+                    // Elemento con subitems
+                    <>
+                      <button
+                        onClick={() => {
+                          setActiveDropdown(activeDropdown === item.name ? "" : item.name);
+                        }}
+                        className={`w-full text-left pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                          pathname === item.href
+                            ? "bg-primary-50 border-primary text-primary"
+                            : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                        }`}
+                      >
+                        {item.name}
+                        <ChevronDown
+                          className={`ml-1 h-4 w-4 inline transition-transform duration-200 ${
+                            activeDropdown === item.name ? "transform rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                      {activeDropdown === item.name && (
+                        <div className="pl-6 space-y-1">
+                          {item.subitems.map((subitem) => (
+                            <Link
+                              key={subitem.name}
+                              href={subitem.href}
+                              className="block py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                              onClick={closeMobileMenu}
+                            >
+                              {subitem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    // Elemento sin subitems (enlace directo)
                     <Link
-                      key={subitem.name}
-                      href={subitem.href}
-                      className="block py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                      href={item.href}
+                      className={`w-full text-left pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                        pathname === item.href
+                          ? "bg-primary-50 border-primary text-primary"
+                          : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                      }`}
                       onClick={closeMobileMenu}
                     >
-                      {subitem.name}
+                      {item.name}
                     </Link>
-                  ))}
+                  )}
                 </div>
-              )}
-            </>
-          ) : (
-            // Elemento sin subitems (enlace directo)
-            <Link
-              href={item.href}
-              className={`w-full text-left pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                pathname === item.href
-                  ? "bg-primary-50 border-primary text-primary"
-                  : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-              }`}
-              onClick={closeMobileMenu}
-            >
-              {item.name}
-            </Link>
-          )}
-        </div>
-      ))}
-    </div>
-    <div className="pt-4 pb-3 border-t border-gray-200">
-      <div className="flex items-center px-4">
-        <div className="flex-shrink-0">
-          <Button asChild>
-            <Link href="/colabora/hazte-socio" className="w-full">
-              HAZTE SOCIO
-            </Link>
-          </Button>
-        </div>
-      </div>
-    </div>
-  </div>
+              ))}
+            </div>
+            <div className="pt-4 pb-3 border-t border-gray-200">
+              <div className="flex items-center px-4">
+                <div className="flex-shrink-0">
+                  <Button asChild>
+                    <Link href="/colabora/hazte-socio" className="w-full">
+                      HAZTE SOCIO
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
       </nav>
     </header>
