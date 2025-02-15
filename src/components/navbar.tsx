@@ -44,6 +44,7 @@ export function Navbar() {
     setActiveDropdown("");
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleNavItemClick = useCallback(
     (href: string) => {
       if (href) {
