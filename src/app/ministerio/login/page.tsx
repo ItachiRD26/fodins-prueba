@@ -15,17 +15,17 @@ export default function LoginPage() {
     e.preventDefault();
     try {
       console.log("Iniciando autenticación...");
-
+  
       // Autenticar al usuario
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log("Autenticación exitosa:", userCredential);
-
+  
       const user = userCredential.user;
-
+  
       // Forzar la regeneración del token
       const idToken = await user.getIdToken(true);
       console.log("Token regenerado:", idToken);
-
+  
       // Enviar la solicitud con el nuevo token
       const response = await fetch("/ministerio/login/api/verifyuser", {
         method: "POST",
@@ -35,19 +35,19 @@ export default function LoginPage() {
         },
         body: JSON.stringify({ uid: user.uid }),
       });
-
+  
       console.log("Respuesta del servidor:", response);
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error del servidor:", errorData);
         setError(`Error en el servidor: ${errorData.message || response.statusText}`);
         return;
       }
-
+  
       const data = await response.json();
       console.log("Datos de respuesta:", data);
-
+  
       if (data.message === "Usuario verificado") {
         console.log("Usuario verificado, redirigiendo...");
         router.push("/ministerio/admin");
@@ -59,6 +59,7 @@ export default function LoginPage() {
       setError("Error al iniciar sesión. Verifica tus credenciales.");
     }
   };
+  
 
   return (
     <div style={styles.container}>
