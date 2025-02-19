@@ -15,6 +15,7 @@ export default function LoginPage() {
     e.preventDefault();
     try {
       console.log("Iniciando autenticación...");
+      console.log("Private Key:", process.env.NEXT_PUBLIC_PRIVATE_KEY);
 
       // Autenticar al usuario
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
