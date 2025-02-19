@@ -11,23 +11,50 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  const isTokenExpired = (token: string): boolean => {
+    try {
+      // Decodificar el payload del token
+      const payloadBase64 = token.split('.')[1]; // Obtener el payload (segunda parte del token)
+      const payloadJson = atob(payloadBase64); // Decodificar Base64
+      const payload = JSON.parse(payloadJson); // Convertir a objeto JSON
+  
+      // Obtener la fecha de expiración (en segundos)
+      const exp = payload.exp;
+  
+      // Comparar con la hora actual (en segundos)
+      const now = Math.floor(Date.now() / 1000); // Convertir a segundos
+  
+      // Si la fecha de expiración es menor que la hora actual, el token ha expirado
+      return exp < now;
+    } catch (error) {
+      console.error("Error decodificando el token:", error);
+      return true; // Si hay un error, considerar el token como expirado
+    }
+  };
+  
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       console.log("Iniciando autenticación...");
-      console.log("Private Key:", process.env.NEXT_PUBLIC_PRIVATE_KEY);
-
+  
       // Autenticar al usuario
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log("Autenticación exitosa:", userCredential);
-
+  
       const user = userCredential.user;
       console.log("UID del usuario:", user.uid);
-
+  
       // Forzar la regeneración del token
       const idToken = await user.getIdToken(true);
       console.log("Token regenerado:", idToken);
-
+  
+      // Verificar si el token ha expirado
+      if (isTokenExpired(idToken)) {
+        console.error("El token ha expirado");
+        setError("El token ha expirado. Por favor, inicia sesión nuevamente.");
+        return;
+      }
+  
       // Enviar la solicitud con el nuevo token
       const response = await fetch("/ministerio/login/api/verifyuser", {
         method: "POST",
@@ -35,21 +62,21 @@ export default function LoginPage() {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${idToken}`,
         },
-        body: JSON.stringify({ uid: user.uid }),
+        body: JSON.stringify({ idToken }),
       });
-
+  
       console.log("Respuesta del servidor:", response);
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error del servidor:", errorData);
         setError(`Error en el servidor: ${errorData.message || response.statusText}`);
         return;
       }
-
+  
       const data = await response.json();
       console.log("Datos de respuesta:", data);
-
+  
       if (data.message === "Usuario verificado") {
         console.log("Usuario verificado, redirigiendo...");
         router.push("/ministerio/admin");

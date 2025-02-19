@@ -19,16 +19,18 @@ const appAdmin = initializeApp({
   credential: cert(serviceAccount),
 }, "appAdmin");
 
-const authAdmin = getAuth(appAdmin);
-
-export const verifyUser = async (uid) => {
+export const verifyUser = async (idToken) => {
   try {
-    const user = await authAdmin.getUser(uid);
+    // Verifica el token JWT (incluye verificación de expiración)
+    const decodedToken = await authAdmin.verifyIdToken(idToken);
+    const uid = decodedToken.uid;
+
+    // Verifica si el UID está en la lista de permitidos
     const allowedUIDs = ['HUD7XNKKzxcHz1Lh7HSXngcJlXn1', 'eJLs6IzcKmUbkWGYJkrAMYcHTgN2'];
-    return allowedUIDs.includes(user.uid);
+    return allowedUIDs.includes(uid);
   } catch (error) {
     console.error("Error verificando usuario:", error);
-    return false;
+    return false; // Si el token es inválido o ha expirado, devuelve false
   }
 };
 
