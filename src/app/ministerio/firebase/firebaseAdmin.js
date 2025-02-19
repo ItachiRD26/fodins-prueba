@@ -19,6 +19,9 @@ const appAdmin = initializeApp({
   credential: cert(serviceAccount),
 }, "appAdmin");
 
+// Inicializa authAdmin
+const authAdmin = getAuth(appAdmin);
+
 export const verifyUser = async (idToken) => {
   try {
     // Verifica el token JWT (incluye verificación de expiración)
@@ -34,4 +37,5 @@ export const verifyUser = async (idToken) => {
   }
 };
 
+// Exporta authAdmin
 export { authAdmin };
