@@ -41,7 +41,7 @@ export default function LoginPage() {
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error del servidor:", errorData);
-        setError("Error en el servidor. Inténtalo de nuevo más tarde.");
+        setError(`Error en el servidor: ${errorData.message || response.statusText}`);
         return;
       }
 
