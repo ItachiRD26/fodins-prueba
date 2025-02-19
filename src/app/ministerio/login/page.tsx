@@ -19,7 +19,10 @@ export default function LoginPage() {
   
       const response = await fetch("/ministerio/login/api/verifyuser", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${await user.getIdToken()}`, // Agrega esta línea si el endpoint requiere un token
+        },
         body: JSON.stringify({ uid: user.uid }),
       });
   
