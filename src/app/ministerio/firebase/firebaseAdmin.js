@@ -19,7 +19,6 @@ const appAdmin = initializeApp({
   credential: cert(serviceAccount),
 }, "appAdmin");
 
-// Inicializa authAdmin
 const authAdmin = getAuth(appAdmin);
 
 export const verifyUser = async (idToken) => {
@@ -37,5 +36,4 @@ export const verifyUser = async (idToken) => {
   }
 };
 
-// Exporta authAdmin
 export { authAdmin };

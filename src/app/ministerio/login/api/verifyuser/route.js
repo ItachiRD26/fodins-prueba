@@ -15,10 +15,10 @@ export async function POST(req) {
   }
 
   try {
-    const { uid } = await req.json();
-    console.log("UID recibido:", uid);
+    const { idToken } = await req.json();
+    console.log("Token recibido:", idToken);
 
-    const isVerified = await verifyUser(uid);
+    const isVerified = await verifyUser(idToken);
     console.log("Resultado de verifyUser:", isVerified);
 
     if (isVerified) {
