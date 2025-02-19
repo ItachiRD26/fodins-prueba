@@ -5,6 +5,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import { useRouter } from "next/navigation";
 
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,16 +20,16 @@ export default function LoginPage() {
   
       const response = await fetch("/ministerio/login/api/verifyuser", {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${await user.getIdToken()}`, // Agrega esta línea si el endpoint requiere un token
+          "Authorization": `Bearer ${await user.getIdToken()}`, // Verifica que el token sea válido
         },
         body: JSON.stringify({ uid: user.uid }),
       });
   
       if (!response.ok) {
-        const errorData = await response.text();
-        console.error("Server error:", errorData);
+        const errorData = await response.json();
+        console.error("Server error:", errorData.message);
         setError("Error en el servidor. Inténtalo de nuevo más tarde.");
         return;
       }
@@ -44,6 +45,7 @@ export default function LoginPage() {
       console.error(error);
     }
   };
+  
 
   return (
     <div style={styles.container}>
