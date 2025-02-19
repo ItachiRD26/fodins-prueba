@@ -21,15 +21,4 @@ const appAdmin = initializeApp({
 
 const authAdmin = getAuth(appAdmin);
 
-export const verifyUser = async (uid) => {
-  try {
-    const user = await authAdmin.getUser(uid);
-    const allowedUIDs = ['HUD7XNKKzxcHz1Lh7HSXngcJlXn1', 'eJLs6IzcKmUbkWGYJkrAMYcHTgN2'];
-    return allowedUIDs.includes(user.uid);
-  } catch (error) {
-    console.error("Error verificando usuario:", error);
-    return false;
-  }
-};
-
 export { authAdmin };
