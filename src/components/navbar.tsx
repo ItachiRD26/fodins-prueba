@@ -208,7 +208,7 @@ export function Navbar() {
                 </div>
               ))}
             </div>
-            <div className="pt-4 pb-3 border-t border-gray-200">
+            <div className="pt-4 pb-3 border-t text-white bg-blue-500 border-gray-200">
               <div className="flex items-center px-4">
                 <div className="flex-shrink-0">
                   <Button asChild>
