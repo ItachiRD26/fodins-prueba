@@ -187,7 +187,7 @@ export default function CampanaPage() {
             <motion.div variants={fadeIn}>
               <Card className="shadow-lg">
                 <CardHeader className="bg-primary text-primary-foreground p-6">
-                  <CardTitle className="text-3xl font-bold">Haz tu Donación</CardTitle>
+                  <CardTitle className=" text-black text-3xl font-bold">Haz tu Donación</CardTitle>
                 </CardHeader>
                 <CardContent className="p-8">
                   <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
@@ -245,7 +245,7 @@ export default function CampanaPage() {
             <motion.div variants={fadeIn}>
               <Card className="shadow-lg">
                 <CardHeader className="bg-primary text-primary-foreground p-6">
-                  <CardTitle className="text-3xl font-bold">Progreso de la Campaña</CardTitle>
+                  <CardTitle className="text-3xl font-bold text-black">Progreso de la Campaña</CardTitle>
                 </CardHeader>
                 <CardContent className="p-8">
                   <div className="space-y-4">

@@ -57,7 +57,7 @@ export function Carousel({ slides, autoPlay = true, interval = 5000 }: CarouselP
               <h1 className="text-5xl font-bold mb-4">{slide.title}</h1>
               <p className="text-xl mb-8">{slide.description}</p>
 
-        <Button asChild variant="default" size="lg">
+        <Button className="bg-blue-500 hover:bg-blue-900" asChild variant="default" size="lg">
         <Link href="/proyectos">
         DESCUBRIR MÁS
         </Link>

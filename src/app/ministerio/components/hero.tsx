@@ -25,7 +25,7 @@ export function HeroSection() {
             Únete a Nosotros
           </a>
           <a
-            href="#videos"
+            href="/ministerio/sermones"
             className="bg-transparent border-2 border-white hover:bg-white hover:text-blue-900 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full text-lg transition duration-300 shadow-lg"
           >
             Explora Más

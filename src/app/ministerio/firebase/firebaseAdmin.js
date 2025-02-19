@@ -15,18 +15,17 @@ const serviceAccount = {
   universe_domain: process.env.NEXT_PUBLIC_UNIVERSE_DOMAIN,
 };
 
-// Inicializa Firebase Admin
 const appAdmin = initializeApp({
   credential: cert(serviceAccount),
 }, "appAdmin");
 
 const authAdmin = getAuth(appAdmin);
 
-// Función para verificar si un usuario está autorizado
 export const verifyUser = async (uid) => {
   try {
     const user = await authAdmin.getUser(uid);
-    return user.uid === "eJLs6IzcKmUbkWGYJkrAMYcHTgN2"; // Reemplaza con el UID del administrador
+    const allowedUIDs = ['HUD7XNKKzxcHz1Lh7HSXngcJlXn1', 'eJLs6IzcKmUbkWGYJkrAMYcHTgN2'];
+    return allowedUIDs.includes(user.uid);
   } catch (error) {
     console.error("Error verificando usuario:", error);
     return false;

@@ -239,7 +239,7 @@ export default function PaginaVoluntarios() {
                   )}
                 </motion.div>
 
-                <motion.button type="submit" className="btn-primary w-full" disabled={loading} variants={fadeIn}>
+                <motion.button type="submit" className=" bg-blue-500 btn-primary w-full" disabled={loading} variants={fadeIn}>
                   {loading ? "Enviando..." : "Enviar solicitud"}
                 </motion.button>
               </motion.form>

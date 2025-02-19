@@ -14,20 +14,25 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Autenticar al usuario con Firebase
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
-      // Verificar si el usuario está autorizado en el servidor
-      const response = await fetch("/api/verifyUser", {
+  
+      const response = await fetch("/ministerio/login/api/verifyuser", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ uid: user.uid }),
       });
-
+  
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error("Server error:", errorData);
+        setError("Error en el servidor. Inténtalo de nuevo más tarde.");
+        return;
+      }
+  
       const data = await response.json();
       if (data.message === "Usuario verificado") {
-        router.push("/ministerio/admin"); // Redirigir al panel de administración
+        router.push("/ministerio/admin");
       } else {
         setError("Usuario no autorizado");
       }
@@ -74,7 +79,6 @@ export default function LoginPage() {
   );
 }
 
-// Estilos
 const styles = {
   container: {
     display: "flex",
@@ -95,12 +99,12 @@ const styles = {
     fontSize: "24px",
     fontWeight: "600",
     marginBottom: "1.5rem",
-    textAlign: "center" as const, // Asegura que textAlign sea del tipo correcto
+    textAlign: "center" as const,
     color: "#333",
   },
   form: {
     display: "flex",
-    flexDirection: "column" as const, // Asegura que flexDirection sea del tipo correcto
+    flexDirection: "column" as const,
   },
   formGroup: {
     marginBottom: "1rem",
@@ -134,6 +138,6 @@ const styles = {
     color: "#dc3545",
     fontSize: "14px",
     marginBottom: "1rem",
-    textAlign: "center" as const, // Asegura que textAlign sea del tipo correcto
+    textAlign: "center" as const,
   },
 };

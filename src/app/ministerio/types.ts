@@ -1,18 +1,29 @@
-export type Verse = {
-  id?: string;
-  reference: string;
-  text: string;
-};
+export interface Sermon {
+  id?: string
+  titulo: string
+  descripcion: string
+  youtubeLink: string
+  preguntasReflexion: string[]
+  subtemas: { titulo: string; contenido: string }[]
+  imagenUrl?: string
+}
 
-export type Video = {
-  id?: string;
-  title: string;
-  url: string;
-};
+export interface Event {
+  id?: string
+  title: string
+  description: string
+  imageUrl: string
+}
 
-export type Event = {
-  id?: string; // Opcional, dependiendo de tu uso
-  title: string;
-  description: string;
-  imageUrl: string; // URL de la imagen
-};
+export interface Video {
+  id?: string
+  title: string
+  url: string
+}
+
+export interface Verse {
+  id?: string
+  text: string
+  reference: string
+}
+

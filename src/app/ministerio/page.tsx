@@ -14,13 +14,18 @@ import type { Event, Verse, Video } from "./types";
 
 // Función para obtener datos del localStorage
 const getCachedData = <T,>(key: string): T | null => {
-  const cachedData = localStorage.getItem(key);
-  return cachedData ? JSON.parse(cachedData) : null;
+  if (typeof window !== "undefined") {
+    const cachedData = localStorage.getItem(key);
+    return cachedData ? JSON.parse(cachedData) : null;
+  }
+  return null;
 };
 
 // Función para guardar datos en el localStorage
 const cacheData = <T,>(key: string, data: T) => {
-  localStorage.setItem(key, JSON.stringify(data));
+  if (typeof window !== "undefined") {
+    localStorage.setItem(key, JSON.stringify(data));
+  }
 };
 
 export default function Home() {
@@ -29,60 +34,53 @@ export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      // Verificar si hay datos en caché para versículos
-      const cachedVerses = getCachedData<Verse[]>("verses");
-      if (cachedVerses) {
-        setVerses(cachedVerses);
-      } else {
-        // Obtener versículos desde Firebase si no hay caché
-        const versesRef = dbRef(db, "verses");
-        onValue(versesRef, (snapshot) => {
-          const data = snapshot.val();
-          if (data) {
-            const versesArray = Object.values(data) as Verse[];
-            setVerses(versesArray);
-            cacheData("verses", versesArray); // Guardar en caché
-          }
-        });
-      }
+    // Cargar datos desde el cache (localStorage) si existen
+    const cachedVerses = getCachedData<Verse[]>("verses");
+    const cachedVideos = getCachedData<Video[]>("videos");
+    const cachedEvents = getCachedData<Event[]>("events");
 
-      // Verificar si hay datos en caché para videos
-      const cachedVideos = getCachedData<Video[]>("videos");
-      if (cachedVideos) {
-        setVideos(cachedVideos);
-      } else {
-        // Obtener videos desde Firebase si no hay caché
-        const videosRef = dbRef(db, "videos");
-        onValue(videosRef, (snapshot) => {
-          const data = snapshot.val();
-          if (data) {
-            const videosArray = Object.values(data) as Video[];
-            setVideos(videosArray);
-            cacheData("videos", videosArray); // Guardar en caché
-          }
-        });
-      }
+    if (cachedVerses) {
+      setVerses(cachedVerses);
+    }
+    if (cachedVideos) {
+      setVideos(cachedVideos);
+    }
+    if (cachedEvents) {
+      setEvents(cachedEvents);
+    }
 
-      // Verificar si hay datos en caché para eventos
-      const cachedEvents = getCachedData<Event[]>("events");
-      if (cachedEvents) {
-        setEvents(cachedEvents);
-      } else {
-        // Obtener eventos desde Firebase si no hay caché
-        const eventsRef = dbRef(db, "events");
-        onValue(eventsRef, (snapshot) => {
-          const data = snapshot.val();
-          if (data) {
-            const eventsArray = Object.values(data) as Event[];
-            setEvents(eventsArray);
-            cacheData("events", eventsArray); // Guardar en caché
-          }
-        });
+    // Escuchar cambios en la base de datos para versículos
+    const versesRef = dbRef(db, "verses");
+    onValue(versesRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const versesArray = Object.values(data) as Verse[];
+        setVerses(versesArray); // Actualizar el estado con los nuevos datos
+        cacheData("verses", versesArray); // Actualizar el cache
       }
-    };
+    });
 
-    fetchData();
+    // Escuchar cambios en la base de datos para videos
+    const videosRef = dbRef(db, "videos");
+    onValue(videosRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const videosArray = Object.values(data) as Video[];
+        setVideos(videosArray); // Actualizar el estado con los nuevos datos
+        cacheData("videos", videosArray); // Actualizar el cache
+      }
+    });
+
+    // Escuchar cambios en la base de datos para eventos
+    const eventsRef = dbRef(db, "events");
+    onValue(eventsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const eventsArray = Object.values(data) as Event[];
+        setEvents(eventsArray); // Actualizar el estado con los nuevos datos
+        cacheData("events", eventsArray); // Actualizar el cache
+      }
+    });
   }, []);
 
   return (

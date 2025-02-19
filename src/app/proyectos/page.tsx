@@ -116,7 +116,7 @@ export default function ProyectosPage() {
                       <CardHeader>
                         <div className="flex justify-between items-start mb-2">
                           <CardTitle className="text-2xl">{project.title}</CardTitle>
-                          <Badge variant="secondary">{project.year}</Badge>
+                          <Badge variant="secondary" className="bg-blue-500">{project.year}</Badge>
                         </div>
                         <div className="flex flex-wrap gap-2 mb-4">
                           {project.categories.map((category, index) => (

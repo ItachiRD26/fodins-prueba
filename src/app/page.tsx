@@ -194,7 +194,7 @@ export default function Home() {
     </p>
     <div className="flex flex-col sm:flex-row justify-center gap-4">
       <Link href="/colabora/hazte-socio" passHref>
-        <Button size="lg">HAZTE SOCIO</Button>
+        <Button className="bg-blue-500 hover:bg-blue-900" size="lg">HAZTE SOCIO</Button>
       </Link>
       <Link href="/conocenos/quienes-somos" passHref>
         <Button variant="outline" size="lg">CONOCE MÁS</Button>

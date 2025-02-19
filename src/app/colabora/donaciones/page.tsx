@@ -123,7 +123,7 @@ export default function DonacionesPage() {
             <motion.div variants={fadeIn}>
               <Card className="shadow-lg">
                 <CardHeader className="bg-primary text-primary-foreground p-6">
-                  <CardTitle className="text-3xl font-bold">Haz tu Donación</CardTitle>
+                  <CardTitle className=" text-black text-3xl font-bold">Haz tu Donación</CardTitle>
                 </CardHeader>
                 <CardContent className="p-8">
                   <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>

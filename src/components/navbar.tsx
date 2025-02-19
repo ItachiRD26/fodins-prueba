@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Facebook, Instagram, Mail, ChevronDown, Youtube } from "lucide-react";
+import { Menu, X, Facebook, Instagram, Mail, ChevronDown, Youtube} from "lucide-react";
 import Image from "next/image";
 
 const navItems = [
@@ -20,12 +20,12 @@ const navItems = [
     subitems: [
       { name: "Hazte socio", href: "/colabora/hazte-socio" },
       { name: "Donaciones", href: "/colabora/donaciones" },
-      { name: "Voluntariado", href: "/colabora/voluntariado" },
+      { name: "Voluntariado", href: "/colabora/voluntariado " },
     ],
   },
   { name: "CAMPAÑA", href: "/campana" }, // Tiene un href válido
   { name: "BLOG", href: "/blog" }, // Tiene un href válido
-  { name: "MINISTERIO", href: "/ministerio" }, // Tiene un href válido
+  { name: "MINISTERIO", href: "/ministerio"}, // Tiene un href válido
 ];
 
 const socialLinks = [
@@ -129,7 +129,7 @@ export function Navbar() {
                 ))}
               </div>
               <div className="flex items-center">
-                <Button asChild>
+                <Button className="text-white bg-blue-500 hover:bg-blue-900" asChild>
                   <Link href="/colabora/hazte-socio">HAZTE SOCIO</Link>
                 </Button>
               </div>

@@ -233,7 +233,7 @@ export default function HazteSocioPage() {
                   />
                 </motion.div>
 
-                <Button type="submit" disabled={loading}>
+                <Button className="bg-blue-500" type="submit" disabled={loading}>
                   {loading ? "Enviando..." : "Enviar Solicitud"}
                 </Button>
               </motion.form>

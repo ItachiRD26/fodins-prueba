@@ -151,7 +151,7 @@ export default function QuienesSomosPage() {
                 key={member.id}
                 className="flex flex-col items-center text-center bg-white rounded-lg shadow-md p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
               >
-                <div className="relative w-40 h-40 mb-4 overflow-hidden rounded-full border-4 border-primary">
+                <div className="relative w-40 h-40 mb-4 overflow-hidden rounded-full border-4 border-blue-500">
                   <Image
                     src={member.imageUrl || "/placeholder.svg"}
                     alt={member.name}
@@ -161,7 +161,7 @@ export default function QuienesSomosPage() {
                   />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{member.name}</h3>
-                <p className="text-primary font-medium mb-4">{member.role}</p>
+                <p className="text-blue-500 font-medium mb-4">{member.role}</p>
                 <p className="text-gray-600 text-sm">{member.bio}</p>
               </div>
             ))}
@@ -192,7 +192,7 @@ export default function QuienesSomosPage() {
       </Container>
 
       {/* Call to Action */}
-      <section className="relative bg-primary text-white py-24">
+      <section className="relative bg-blue-900 text-white py-24">
         <div className="absolute inset-0 bg-black bg-opacity-50" />
         <Container className="relative z-10 text-center">
           <h2 className="text-4xl font-bold mb-6">Únete a Nuestra Misión</h2>
@@ -204,7 +204,7 @@ export default function QuienesSomosPage() {
   <Button
     size="lg"
     variant="secondary"
-    className="font-semibold text-white hover:bg-white hover:text-primary transition-colors duration-300"
+    className="font-semibold bg-blue-500 text-white hover:bg-gray-400 hover:text-primary transition-colors duration-300"
   >
     Colabora con Nosotros
   </Button>

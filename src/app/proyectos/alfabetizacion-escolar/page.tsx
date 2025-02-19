@@ -46,7 +46,7 @@ export default function ProyectoPage() {
             <h1 className="text-3xl font-bold mb-4">{proyecto.titulo}</h1>
             <div className="flex flex-wrap gap-2 mb-4">
               {proyecto.categorias.map((categoria, index) => (
-                <Badge key={index} variant="secondary">
+                <Badge className="bg-blue-500" key={index} variant="secondary">
                   {categoria}
                 </Badge>
               ))}
@@ -76,7 +76,7 @@ export default function ProyectoPage() {
           <div className="text-center">
             <h2 className="text-2xl font-bold mb-4">¿Quieres apoyar este proyecto?</h2>
             <Link href="/colabora/donaciones">
-              <Button size="lg" className="font-semibold">
+              <Button size="lg" className="font-semibold bg-blue-500">
                 Donar Ahora
               </Button>
             </Link>
