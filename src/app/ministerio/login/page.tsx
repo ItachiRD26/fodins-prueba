@@ -42,11 +42,9 @@ export default function LoginPage() {
       console.log("Autenticación exitosa:", userCredential);
 
       const user = userCredential.user;
-      console.log("UID del usuario:", user.uid);
 
       // Forzar la regeneración del token
       const idToken = await user.getIdToken(true);
-      console.log("Token regenerado:", idToken);
 
       // Verificar si el token ha expirado
       if (isTokenExpired(idToken)) {

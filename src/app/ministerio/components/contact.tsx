@@ -56,7 +56,7 @@ export function ContactSection() {
               </li>
               <li className="flex items-center">
                 <Phone className="mr-3" />
-                <span>+1 849 215 8656</span>
+                <span>+1 829 713 7029</span>
               </li>
               <li className="flex items-center">
                 <Mail className="mr-3" />
