@@ -537,7 +537,7 @@ export default function AdminPanel() {
               />
               <Input
                 type="text"
-                placeholder="Enlace de YouTube"
+                placeholder="Enlace de YouTube(opcional)"
                 value={youtubeLink}
                 onChange={(e) => setYoutubeLink(e.target.value)}
               />

@@ -2,7 +2,7 @@ export interface Sermon {
   id?: string
   titulo: string
   descripcion: string
-  youtubeLink: string
+  youtubeLink?: string
   preguntasReflexion: string[]
   subtemas: { titulo: string; contenido: string }[]
   imagenUrl?: string
