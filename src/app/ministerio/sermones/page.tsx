@@ -80,14 +80,20 @@ export default function Sermones() {
                 <CardDescription>{sermon.descripcion}</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="w-full aspect-video mb-6">
-                  <iframe
-                    src={`https://www.youtube.com/embed/${sermon.youtubeLink.split("v=")[1]}`}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full rounded-lg"
-                  ></iframe>
-                </div>
+              <div className="w-full aspect-video mb-6">
+  {sermon.youtubeLink ? (
+    <iframe
+      src={`https://www.youtube.com/embed/${sermon.youtubeLink.split("v=")[1]}`}
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen
+      className="w-full h-full rounded-lg"
+    ></iframe>
+  ) : (
+    <div className="w-full h-full bg-gray-200 flex items-center justify-center rounded-lg">
+      <p className="text-gray-500">No video available</p>
+    </div>
+  )}
+</div>
 
                 {sermon.imagenUrl && (
                   <div className="w-full h-[400px] mb-6">
