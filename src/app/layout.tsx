@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "FODINS",
   description:
     "Fodins es una fundación comprometida con el desarrollo social, brindando oportunidades y apoyo a quienes más lo necesitan. Juntos, construimos un futuro mejor.",
+    keywords: ["fundación", "desarrollo social", "fondins republica dominicana", "oportunidades", "fodins", "educación", "salud"],
   icons: {
     icon: "/logo.png",
   },
