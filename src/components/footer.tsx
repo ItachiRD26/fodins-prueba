@@ -158,7 +158,7 @@ export function Footer() {
         <div className="mt-12 border-t border-gray-800 pt-8">
           <div className="flex justify-center">
             <p className="text-base text-gray-400 text-center">
-              &copy; {new Date().getFullYear()} Fondis. Todos los derechos reservados.
+              &copy; {new Date().getFullYear()} Fodins. Todos los derechos reservados.
             </p>
           </div>
         </div>
