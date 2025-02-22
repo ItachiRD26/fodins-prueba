@@ -24,7 +24,7 @@ const links = {
   ],
   contact: {
     email: "fundacion@fodins.org",
-    phone: "+1-809-713-7029",
+    phone: "+1-829-713-7029",
     address:
       "C/2da No.9, Urb. Vista Verde, San Felipe, Punta, Villa Mella, Santo Domingo Norte, Santo Domingo",
   },
