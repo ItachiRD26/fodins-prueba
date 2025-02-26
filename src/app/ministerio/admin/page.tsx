@@ -300,6 +300,7 @@ export default function AdminPanel() {
     } finally {
       setUploading(false)
     }
+    console.log("Archivo Word subido:", sermonWordFile);
   }
 
   const handleDeleteSermon = async (id: string, imagenUrl?: string) => {
