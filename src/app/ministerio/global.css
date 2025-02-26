@@ -34,3 +34,56 @@ body {
   left: 0;
 }
 
+/* Fuentes personalizadas para sermones */
+@import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&family=Arial&display=swap');
+
+/* Estilos específicos para la página de sermones */
+.ministerio-sermones .prose {
+  font-family: 'Arial', sans-serif; /* Fuente predeterminada */
+}
+
+.ministerio-sermones .prose strong,
+.ministerio-sermones .prose b {
+  font-family: 'Times New Roman', serif; /* Fuente para negritas */
+  font-weight: bold;
+}
+
+.ministerio-sermones .prose h1,
+.ministerio-sermones .prose h2,
+.ministerio-sermones .prose h3,
+.ministerio-sermones .prose h4,
+.ministerio-sermones .prose h5,
+.ministerio-sermones .prose h6 {
+  font-family: 'Times New Roman', serif; /* Fuente para títulos */
+  font-weight: bold;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.ministerio-sermones .prose p {
+  margin-bottom: 1.5rem; /* Espacio entre párrafos */
+  line-height: 1.6; /* Altura de línea */
+}
+
+.ministerio-sermones .prose ul,
+.ministerio-sermones .prose ol {
+  margin-bottom: 1.5rem; /* Espacio para listas */
+  padding-left: 1.5rem; /* Sangría para listas */
+}
+
+.ministerio-sermones .prose li {
+  margin-bottom: 0.5rem; /* Espacio entre elementos de lista */
+}
+
+.ministerio-sermones .prose a {
+  color: #2563eb; /* Color para enlaces */
+  text-decoration: underline;
+}
+
+.ministerio-sermones .prose blockquote {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+  border-left: 4px solid #ddd;
+  color: #666;
+}

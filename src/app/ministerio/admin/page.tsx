@@ -1,6 +1,5 @@
 "use client"
 
-import type React from "react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { signOut, onAuthStateChanged } from "firebase/auth"
@@ -14,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import mammoth from "mammoth"
 
 export default function AdminPanel() {
   const [newVerseText, setNewVerseText] = useState("")
@@ -31,11 +31,9 @@ export default function AdminPanel() {
   const [successMessage, setSuccessMessage] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
   const [titulo, setTitulo] = useState("")
-  const [descripcion, setDescripcion] = useState("")
-  const [youtubeLink, setYoutubeLink] = useState("")
-  const [preguntasReflexion, setPreguntasReflexion] = useState<string[]>([])
-  const [subtemas, setSubtemas] = useState<{ titulo: string; contenido: string }[]>([])
+  const [contenido, setContenido] = useState("")
   const [sermonImage, setSermonImage] = useState<File | null>(null)
+  const [sermonWordFile, setSermonWordFile] = useState<File | null>(null)
   const [verses, setVerses] = useState<Verse[]>([])
   const [videos, setVideos] = useState<Video[]>([])
   const [events, setEvents] = useState<Event[]>([])
@@ -267,7 +265,7 @@ export default function AdminPanel() {
   const handleAddSermon = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!titulo || !descripcion || !youtubeLink || preguntasReflexion.length === 0 || subtemas.length === 0) {
+    if (!titulo || !contenido) {
       showErrorMessage("Por favor, complete todos los campos del sermón.")
       return
     }
@@ -286,20 +284,14 @@ export default function AdminPanel() {
       const newSermonRef = push(sermonesRef)
       const newSermon: Sermon = {
         titulo,
-        descripcion,
-        youtubeLink,
-        preguntasReflexion,
-        subtemas,
+        contenido,
         imagenUrl,
       }
       await set(newSermonRef, newSermon)
 
       showSuccessMessage("Sermón agregado correctamente.")
       setTitulo("")
-      setDescripcion("")
-      setYoutubeLink("")
-      setPreguntasReflexion([])
-      setSubtemas([])
+      setContenido("")
       setSermonImage(null)
     } catch (error) {
       console.error("Error agregando sermón:", error)
@@ -311,13 +303,11 @@ export default function AdminPanel() {
 
   const handleDeleteSermon = async (id: string, imagenUrl?: string) => {
     try {
-      // Primero, eliminamos la imagen si existe
       if (imagenUrl) {
         const imageRef = storageRef(storage, imagenUrl)
         await deleteObject(imageRef)
       }
 
-      // Luego, eliminamos los datos del sermón de la base de datos en tiempo real
       const sermonRef = ref(db, `sermones/${id}`)
       await remove(sermonRef)
 
@@ -325,6 +315,64 @@ export default function AdminPanel() {
     } catch (error) {
       console.error("Error eliminando sermón:", error)
       showErrorMessage("Hubo un error al eliminar el sermón.")
+    }
+  }
+
+  const handleWordFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0]
+      setSermonWordFile(file)
+  
+      // Leer el archivo Word y extraer el contenido en HTML
+      const arrayBuffer = await file.arrayBuffer()
+      const result = await mammoth.convertToHtml({ arrayBuffer })
+  
+      if (result.value) {
+        // Agregar estilos en línea al HTML generado
+        const styledContent = `
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              line-height: 1.6;
+            }
+            h1, h2, h3, h4, h5, h6 {
+              font-family: 'Times New Roman', serif;
+              font-weight: bold;
+              margin-top: 1.5rem;
+              margin-bottom: 1rem;
+            }
+            p {
+              margin-bottom: 1.5rem;
+            }
+            ul, ol {
+              margin-bottom: 1.5rem;
+              padding-left: 1.5rem;
+            }
+            li {
+              margin-bottom: 0.5rem;
+            }
+            strong, b {
+              font-family: 'Times New Roman', serif;
+              font-weight: bold;
+            }
+            a {
+              color: #2563eb;
+              text-decoration: underline;
+            }
+            blockquote {
+              margin-top: 1.5rem;
+              margin-bottom: 1.5rem;
+              padding-left: 1rem;
+              border-left: 4px solid #ddd;
+              color: #666;
+            }
+          </style>
+          ${result.value}
+        `
+        setContenido(styledContent) // Guardar el HTML con estilos en línea
+      } else {
+        showErrorMessage("No se pudo extraer el contenido del archivo Word.")
+      }
     }
   }
 
@@ -530,95 +578,13 @@ export default function AdminPanel() {
                 value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
               />
-              <Textarea
-                placeholder="Descripción del sermón"
-                value={descripcion}
-                onChange={(e) => setDescripcion(e.target.value)}
-              />
-              <Input
-                type="text"
-                placeholder="Enlace de YouTube(opcional)"
-                value={youtubeLink}
-                onChange={(e) => setYoutubeLink(e.target.value)}
-              />
               <div>
-                <h3 className="text-xl font-semibold mb-2">Preguntas para reflexionar:</h3>
-                {preguntasReflexion.map((pregunta, index) => (
-                  <div key={index} className="flex items-center space-x-2 mb-2">
-                    <Input
-                      type="text"
-                      placeholder={`Pregunta ${index + 1}`}
-                      value={pregunta}
-                      onChange={(e) => {
-                        const newPreguntas = [...preguntasReflexion]
-                        newPreguntas[index] = e.target.value
-                        setPreguntasReflexion(newPreguntas)
-                      }}
-                    />
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      onClick={() => {
-                        const newPreguntas = preguntasReflexion.filter((_, i) => i !== index)
-                        setPreguntasReflexion(newPreguntas)
-                      }}
-                    >
-                      Eliminar
-                    </Button>
-                  </div>
-                ))}
-                <Button
-                  className="text-black"
-                  type="button"
-                  onClick={() => setPreguntasReflexion([...preguntasReflexion, ""])}
-                >
-                  Agregar Pregunta
-                </Button>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2">Subtemas:</h3>
-                {subtemas.map((subtema, index) => (
-                  <div key={index} className="space-y-2 mb-4">
-                    <Input
-                      type="text"
-                      placeholder={`Título del subtema ${index + 1}`}
-                      value={subtema.titulo}
-                      onChange={(e) => {
-                        const newSubtemas = [...subtemas]
-                        newSubtemas[index].titulo = e.target.value
-                        setSubtemas(newSubtemas)
-                      }}
-                    />
-                    <Textarea
-                      placeholder={`Contenido del subtema ${index + 1}`}
-                      value={subtema.contenido}
-                      onChange={(e) => {
-                        const newSubtemas = [...subtemas]
-                        newSubtemas[index].contenido = e.target.value
-                        setSubtemas(newSubtemas)
-                      }}
-                    />
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      onClick={() => {
-                        const newSubtemas = subtemas.filter((_, i) => i !== index)
-                        setSubtemas(newSubtemas)
-                      }}
-                    >
-                      Eliminar Subtema
-                    </Button>
-                  </div>
-                ))}
-                {subtemas.length < 3 && (
-                  <Button
-                    className="text-black"
-                    type="button"
-                    onClick={() => setSubtemas([...subtemas, { titulo: "", contenido: "" }])}
-                  >
-                    Agregar Subtema
-                  </Button>
-                )}
+                <h3 className="text-xl font-semibold mb-2">Subir Documento Word:</h3>
+                <Input
+                  type="file"
+                  accept=".docx"
+                  onChange={handleWordFileUpload}
+                />
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2">Imagen del sermón:</h3>
@@ -645,7 +611,6 @@ export default function AdminPanel() {
             <CardContent className="flex justify-between items-center p-4">
               <div>
                 <p className="text-lg font-semibold">{sermon.titulo}</p>
-                <p className="text-gray-700">{sermon.descripcion}</p>
               </div>
               <Button variant="destructive" onClick={() => handleDeleteSermon(sermon.id!, sermon.imagenUrl)}>
                 Eliminar
@@ -657,4 +622,3 @@ export default function AdminPanel() {
     </div>
   )
 }
-
