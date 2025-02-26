@@ -293,13 +293,13 @@ export default function AdminPanel() {
       setTitulo("")
       setContenido("")
       setSermonImage(null)
+      setSermonWordFile(null)
     } catch (error) {
       console.error("Error agregando sermón:", error)
       showErrorMessage("Hubo un error al agregar el sermón.")
     } finally {
       setUploading(false)
     }
-    console.log("Archivo Word subido:", sermonWordFile);
   }
 
   const handleDeleteSermon = async (id: string, imagenUrl?: string) => {
